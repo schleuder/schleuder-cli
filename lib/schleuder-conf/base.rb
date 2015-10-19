@@ -2,32 +2,32 @@ module SchleuderConf
   class Base < Thor
     include Helper
 
-    class_option :port, default: 4567, desc: 'The port schleuderd is listening at.', aliases: '-p'
+    class_option :port, aliases: '-p', default: 4567, banner: '<number>', desc: 'The port schleuderd is listening at.'
 
-    register(Subscription,
-             'subscription',
-             'subscription ...',
+    register(Subscriptions,
+             'subscriptions',
+             'subscriptions ...',
              'Create and manage subscriptions')
 
-    register(List,
-             'list',
-             'list ...',
-             'Create and manage lists')
+    register(Keys,
+             'keys',
+             'keys ...',
+             'Manage OpenPGP-keys')
 
-    desc 'version', "Show version of #{ARGV[0]}"
+    register(Lists,
+             'lists',
+             'lists ...',
+             'Create and configure lists')
+
+    map '-v' => :version
+    desc 'version', "Show version of schleuder-conf or schleuderd."
+    method_option :remote, aliases: '-r', banner: '', desc: "Show version of schleuderd at the server."
     def version
-      say VERSION
-    end
-
-    desc 'schleuder_version', 'Show version of schleuder at the server.'
-    def schleuder_version
-      say get('/version')['version']
-    end
-
-    desc 'check_keys list@hostname', "Check for expiring or unusable keys."
-    def check_keys(listname)
-      resp = get(url(listname, :check_keys))
-      puts resp['result']
+      if options.remote
+        say get('/version')['version']
+      else
+        say VERSION
+      end
     end
   end
 end
