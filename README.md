@@ -27,14 +27,13 @@ See `schleuder-conf help`.
 E.g.:
 
     Commands:
-      schleuder-conf check_keys list@hostname  # Check for expiring or unusable keys.
-      schleuder-conf help [COMMAND]            # Describe available commands or one specific command
-      schleuder-conf list ...                  # Create and manage lists
-      schleuder-conf schleuder_version         # Show version of schleuder at the server.
-      schleuder-conf subscription ...          # Create and manage subscriptions
-      schleuder-conf version                   # Show version of h
+      schleuder-conf help [COMMAND]     # Describe available commands or one specific command
+      schleuder-conf keys ...           # Manage OpenPGP-keys
+      schleuder-conf lists ...          # Create and configure lists
+      schleuder-conf subscriptions ...  # Create and manage subscriptions
+      schleuder-conf version            # Show version of schleuder-conf or schleuderd.
 
     Options:
-      -p, [--port=PORT]  # The port schleuderd is listening at.
-                         # Default: 4567
+      -p, [--port=<number>]  # The port schleuderd is listening at.
+                             # Default: 4567
 
