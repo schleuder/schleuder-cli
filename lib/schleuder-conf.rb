@@ -2,6 +2,7 @@ require 'thor'
 require 'json'
 require 'pathname'
 require 'net/https'
+require 'uri'
 
 rootdir = Pathname.new(__FILE__).dirname.dirname.realpath
 $:.unshift File.join(rootdir, 'lib')

@@ -21,11 +21,18 @@ module SchleuderConf
         end
     end
 
-    def url(listname=nil, *args)
-      u = "/lists/#{listname}"
-      if args
-        u << "/#{args.join('/')}"
+    def url(*args)
+      if args.last.is_a?(Hash)
+        params = args.pop
       end
+      u = "/#{args.join('/')}.json"
+      if params
+        paramstring  = params.map do |k,v|
+          "#{URI.escape(k.to_s)}=#{URI.escape(v.to_s)}"
+        end.join('&')
+        u << "?#{paramstring}"
+      end
+      u
     end
 
     def get(url)
@@ -42,6 +49,18 @@ module SchleuderConf
     def put(url, payload)
       req = Net::HTTP::Put.new(url)
       req.body = payload.to_json
+      request(req)
+    end
+
+    def patch(url, value)
+      req = Net::HTTP::Patch.new(url)
+      req.body = payload.to_json
+      request(req)
+    end
+
+    # 'options' is reserved by Thor
+    def options_req(url)
+      req = Net::HTTP::Options.new(url)
       request(req)
     end
 
@@ -67,10 +86,6 @@ module SchleuderConf
       exit 1
     end
 
-    def getlist(listname)
-      get("/lists/#{listname}")
-    end
-
     def fatal(msgs)
       Array(msgs).each do |msg|
         error msg
@@ -90,52 +105,8 @@ module SchleuderConf
       exit
     end
 
-    def show_or_set_config(object, option, value)
-      if option.blank?
-        list_options(object)
-      elsif value.blank?
-        show_config_value(object, option)
-      else
-        set_config_value(object, option, value)
-      end
-    end
-
     def list_options(object)
       say "Available options:\n\n#{object.class.configurable_attributes.join("\n")}"
-    end
-
-    def show_config_value(object, option)
-      if object.respond_to?(option)
-        show_value object.send(option)
-      elsif object[option].present?
-        show_value object[option]
-      else
-        fatal "No such config-option: '#{option}'"
-      end
-    end
-
-    def set_config_value(object, option, value)
-      case value.strip
-      when /\A\[.*\]\z/
-        # Convert input into Array
-        value = value.gsub('[', '').gsub(']', '').split(/,\s/)
-      when /\A\{.*\}\z/
-        # Convert input into Hash
-        tmp = value.gsub('{', '').gsub('}', '').split(/,\s/)
-        value = tmp.inject({}) do |hash, pair|
-          k,v = pair.split(/:\s|=>\s/)
-          hash[k.strip] = v.strip
-          hash
-        end
-      end
-      object[option] = value
-      if object.save
-        show_value object.send(option)
-      else
-        object.errors.each do |attrib, message|
-          error "#{attrib} #{message}"
-        end
-      end
     end
 
   end

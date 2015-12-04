@@ -9,22 +9,22 @@ module SchleuderConf
         fatal "File '#{keyfile}' not readable"
       end
 
-      say post(url(listname, :keys), File.read(keyfile))
+      say post(url(:keys, {list_id: listname}), File.read(keyfile))
     end
 
     desc 'show <list@hostname>', "List keys available to list."
     def show(listname)
-      say get(url(options.list, :keys))
+      say get(url(:keys, {list_id: listname}))
     end
 
     desc 'delete <list@hostname> <fingerprint>', "Delete key from list."
     def delete(listname, fingerprint)
-      say delete(url(listname, :keys, fingerprint))
+      say delete(url(:keys, fingerprint, {list_id: listname}))
     end
 
     desc 'check <list@hostname>', "Check for expiring or unusable keys."
     def check(listname)
-      resp = get(url(listname, :check_keys))
+      resp = get(url(:check_keys, {list_id: listname}))
       puts resp['result']
     end
   end

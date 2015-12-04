@@ -5,7 +5,7 @@ module SchleuderConf
 
     desc 'list', 'List all known lists.'
     def list
-      get(url()).each do |list|
+      get(url(:lists)).each do |list|
         say list['email']
       end
     end
@@ -16,7 +16,7 @@ module SchleuderConf
         fatal "File not found: #{adminkeypath}"
       end
 
-      post(url(), {
+      post(url(:lists), {
           listname: listname,
           adminaddress: adminaddress,
           adminkey: File.read(adminkeypath)
@@ -25,15 +25,20 @@ module SchleuderConf
       say "List #{listname} successfully created, #{adminaddress} subscribed!\nDon't forget to hook it into your MTA."
     end
 
+    desc 'list-options', 'List available options for lists.'
+    def list_options()
+      say options_req(url(:lists)).join("\n")
+    end
+
     desc 'show <list@hostname> <option>', 'Get the value of a list-option.'
     def show(listname, option)
-      list = getlist(listname)
+      list = get(url(:lists, listname))
       show_value(list[option])
     end
 
     desc 'set <list@hostname> <option> <value>', 'Get or set the value of a list-option.'
     def set(listname, option, value)
-      if put(url(listname), {option => value})
+      if patch(url(:lists, listname, {option => value}))
         show_value(value)
       end
     end
@@ -44,7 +49,7 @@ module SchleuderConf
       if answer.downcase != 'y'
         exit 0
       end
-      say delete(url(listname))
+      say delete(url(:lists, listname))
     end
 
 
