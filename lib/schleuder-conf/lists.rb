@@ -10,7 +10,7 @@ module SchleuderConf
       end
     end
 
-    desc 'new <list@hostname> <adminaddress> [</path/to/publickeys.asc>]', 'Create a new schleuder list.'
+    desc 'new <list@hostname> <adminaddress> </path/to/publickeys.asc>', 'Create a new schleuder list.'
     def new(listname, adminaddress, adminkeypath)
       if ! File.readable?(adminkeypath)
         fatal "File not found: #{adminkeypath}"
