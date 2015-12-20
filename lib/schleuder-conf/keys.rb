@@ -9,17 +9,32 @@ module SchleuderConf
         fatal "File '#{keyfile}' not readable"
       end
 
-      say post(url(:keys, {list_id: listname}), File.read(keyfile))
+      res = post(url(:keys, {list_id: listname}), {ascii: File.read(keyfile)})
+      if res.is_a?(Hash)
+        if res.empty?
+          say 'No keys found in input'
+        else
+          res.each do |fpr, status|
+            say "0x#{fpr}: #{status}"
+          end
+        end
+      else
+        say res
+      end
     end
 
     desc 'show <list@hostname>', "List keys available to list."
     def show(listname)
-      say get(url(:keys, {list_id: listname}))
+      if keys = get(url(:keys, {list_id: listname}))
+        keys.each do |hash|
+          say "0x#{hash['fingerprint']} #{hash['email']}"
+        end
+      end
     end
 
     desc 'delete <list@hostname> <fingerprint>', "Delete key from list."
     def delete(listname, fingerprint)
-      say delete(url(:keys, fingerprint, {list_id: listname}))
+      delete_req(url(:keys, fingerprint, {list_id: listname})) || ok
     end
 
     desc 'check <list@hostname>', "Check for expiring or unusable keys."

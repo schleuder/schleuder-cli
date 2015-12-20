@@ -64,26 +64,51 @@ module SchleuderConf
       request(req)
     end
 
-    def delete(url)
+    def delete_req(url)
       req = Net::HTTP::Delete.new(url)
       request(req)
     end
 
+    def debug(msg)
+      if $DEBUG
+        $stderr.puts "SchleuderConf: #{msg}"
+      end
+    end
+
     def request(req)
+      debug "Request to API: #{req.inspect}"
+      debug "API request path: #{req.path.inspect}"
+      debug "API request headers: #{req.to_hash.inspect}"
+      debug "API request body: #{req.body.inspect}"
       resp = api.request(req)
+      debug "Response from API: #{resp.inspect}"
+      debug "API response headers: #{resp.to_hash.inspect}"
+      debug "API response body: #{resp.body}"
       case resp.code.to_i
       when 404
         fatal resp.body
       when 400
-        fatal "Error: #{resp.body}"
+        if body = parse_body(resp.body)
+          fatal "Error: #{body['errors']}"
+        else
+          fatal "Unknown error"
+        end
       when 500
         fatal 'Server error, try again later'
       else
-        JSON.parse(resp.body)
+        parse_body(resp.body)
       end
     rescue Errno::ECONNREFUSED
       fatal "Error: Cannot connect to schleuderd at #{api.address}:#{api.port}, please check if it's running."
       exit 1
+    end
+
+    def parse_body(body)
+      if body.to_s.empty?
+        nil
+      else
+        JSON.parse(body)
+      end
     end
 
     def fatal(msgs)
@@ -109,5 +134,9 @@ module SchleuderConf
       say "Available options:\n\n#{object.class.configurable_attributes.join("\n")}"
     end
 
+    def ok
+      say "Ok."
+      exit 0
+    end
   end
 end

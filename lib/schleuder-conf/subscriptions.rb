@@ -14,15 +14,29 @@ module SchleuderConf
     desc 'new <list@hostname> <user@example.org> [<fingerprint>] [</path/to/public.key>]', 'Subscribe email-address to list.'
     long_desc 'Subscribe an email-address to a list, optionally setting the fingerprint and importing public keys from a file.'
     def new(listname, email, fingerprint=nil, keyfile=nil)
-      if ! File.readable?(keyfile)
-        fatal "File not found: #{keyfile}"
+      if keyfile
+        if ! File.readable?(keyfile)
+          fatal "File not found: #{keyfile}"
+        else
+          keydata = File.read(keyfile)
+        end
       end
-      post(url(:subscriptions, {list_id: listname}), {
+      res = post(url(:subscriptions, {list_id: listname}), {
           email: email,
-          fingerprint: fingerprint,
-          key: File.read(keyfile)
+          fingerprint: fingerprint.to_s
         })
+      if res && res['errors']
+        res['errors'].each do |k,v|
+          say "#{k.capitalize} #{v.join(', ')}"
+        end
+        exit 1
+      end
+
       say "#{email} subscribed to #{listname}"
+      if keydata
+        res = post(url(:keys, {list_id: listname}), {ascii: keydata})
+        say res if res
+      end
     end
 
     desc 'list-options', 'List available options for subscriptions.'
@@ -43,7 +57,7 @@ module SchleuderConf
 
     desc 'delete <list@hostname> <user@example.org>', 'Unsubscribe user@example.org from list@hostname.'
     def delete(listname, email)
-      delete(url(:subscriptions, email, {list_id: listname}))
+      delete_req(url(:subscriptions, email, {list_id: listname}))
       say "#{email} unsubscribed from #{listname}."
     end
 
