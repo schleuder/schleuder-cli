@@ -49,7 +49,7 @@ module SchleuderConf
       if answer.downcase != 'y'
         exit 0
       end
-      say delete(url(:lists, listname))
+      say delete_req(url(:lists, listname))
     end
 
 
