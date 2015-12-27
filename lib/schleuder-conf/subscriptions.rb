@@ -7,8 +7,12 @@ module SchleuderConf
     def list(listname)
       subscriptions = get(url(:subscriptions, {list_id: listname}))
       subscriptions.each do |subscription|
-        say "#{subscription['email']}\t#{subscription['fingerprint'] || 'N/A'}"
+        email = subscription['email']
+        fingerprint = subscription['fingerprint'] || 'N/A'
+        admin = subscription['admin'] ? 'admin' : ''
+        say "#{email}\t#{fingerprint}\t#{admin}"
       end
+      say "\n"
     end
 
     desc 'new <list@hostname> <user@example.org> [<fingerprint>] [</path/to/public.key>]', 'Subscribe email-address to list.'
