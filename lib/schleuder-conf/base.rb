@@ -24,7 +24,7 @@ module SchleuderConf
     method_option :remote, aliases: '-r', banner: '', desc: "Show version of schleuderd at the server."
     def version
       if options.remote
-        say get('/version')['version']
+        say get('/version.json')['version']
       else
         say VERSION
       end
