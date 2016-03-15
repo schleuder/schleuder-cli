@@ -101,6 +101,9 @@ module SchleuderConf
     rescue Errno::ECONNREFUSED
       fatal "Error: Cannot connect to schleuderd at #{api.address}:#{api.port}, please check if it's running."
       exit 1
+    rescue Net::ReadTimeout
+      fatal "Error: Timeout while waiting for server."
+      exit 1
     end
 
     def parse_body(body)
