@@ -9,17 +9,17 @@ module SchleuderConf
         fatal "File '#{keyfile}' not readable"
       end
 
-      res = post(url(:keys, {list_id: listname}), {ascii: File.read(keyfile)})
-      if res.is_a?(Hash)
-        if res.empty?
+      import_result = post(url(:keys, {list_id: listname}), {ascii: File.read(keyfile)})
+      if import_result.is_a?(Hash)
+        if import_result.considered == 0
           say 'No keys found in input'
         else
-          res.each do |fpr, status|
-            say "0x#{fpr}: #{status}"
+          import_result.each do |import_status|
+            say "0x#{import_status.fpr}: #{import_status.action}"
           end
         end
       else
-        say res
+        say import_result
       end
     end
 
