@@ -19,6 +19,6 @@ Gem::Specification.new do |s|
   # TODO: extend/replace expired cert
   #s.signing_key = "#{ENV['HOME']}/.gem/schleuder-gem-private_key.pem"
   #s.cert_chain  = ['gem-public_cert.pem']
-  s.license = 'GPL-3'
+  s.license = 'GPL-3.0'
   s.add_runtime_dependency 'thor', '~> 0'
 end
