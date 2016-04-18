@@ -17,7 +17,7 @@ module SchleuderConf
       end
 
       post(url(:lists), {
-          listname: listname,
+          email: listname,
           adminaddress: adminaddress,
           adminkey: File.read(adminkeypath)
         })
