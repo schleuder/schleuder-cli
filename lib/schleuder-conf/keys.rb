@@ -5,21 +5,16 @@ module SchleuderConf
 
     desc 'import <list@hostname> </path/to/keyfile>', "Import a key into a list's keyring."
     def import(listname, keyfile)
-      if ! File.readable?(keyfile)
-        fatal "File '#{keyfile}' not readable"
-      end
+      test_file(keyfile)
 
-      import_result = post(url(:keys, {list_id: listname}), {ascii: File.read(keyfile)})
-      if import_result.is_a?(Hash)
-        if import_result.considered == 0
-          say 'No keys found in input'
-        else
-          import_result.each do |import_status|
-            say "0x#{import_status.fpr}: #{import_status.action}"
-          end
-        end
+
+      import_result = import_key(listname, keyfile)
+      if import_result['considered'] < 1
+        say "#{keyfile} did not contain any keys!"
       else
-        say import_result
+        import_result['imports'].each do |import_status|
+          say "Key 0x#{import_status['fpr']}: #{import_status['action']}"
+        end
       end
     end
 

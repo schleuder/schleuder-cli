@@ -11,18 +11,31 @@ module SchleuderConf
     end
 
     desc 'new <list@hostname> <adminaddress> </path/to/publickeys.asc>', 'Create a new schleuder list.'
-    def new(listname, adminaddress, adminkeypath)
-      if ! File.readable?(adminkeypath)
-        fatal "File not found: #{adminkeypath}"
+    def new(listname, adminaddress, keyfile)
+      test_file(keyfile)
+
+      res = post(url(:lists), {email: listname})
+      if res && res['errors']
+        show_errors(res['errors'])
+      else
+        say "List #{listname} successfully created! Don't forget to hook it into your MTA."
       end
 
-      post(url(:lists), {
-          email: listname,
-          adminaddress: adminaddress,
-          adminkey: File.read(adminkeypath)
-        })
+      import_result = import_key(listname, keyfile)
+      case import_result['considered']
+      when 1
+        fingerprint = import_result['imports'].first['fpr']
+        say "Key 0x#{fingerprint} imported."
+      when 0
+        fingerprint = nil
+        say "#{keyfile} did not contain any keys!"
+      else
+        fingerprint = nil
+        say "#{keyfile} contains more than one key, cannot derive fingerprint for #{adminaddress}. Please set it manually!"
+      end
 
-      say "List #{listname} successfully created, #{adminaddress} subscribed!\nDon't forget to hook it into your MTA."
+      subscribe(listname, adminaddress, fingerprint, true)
+      say "#{adminaddress} subscribed to #{listname}."
     end
 
     desc 'list-options', 'List available options for lists.'

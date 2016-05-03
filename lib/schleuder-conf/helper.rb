@@ -141,5 +141,39 @@ module SchleuderConf
       say "Ok."
       exit 0
     end
+
+    def import_key(listname, keyfile)
+      test_file(keyfile)
+      keydata = File.read(keyfile)
+      post(url(:keys, {list_id: listname}), {ascii: keydata})
+    end
+
+    def test_file(filename)
+      if ! File.readable?(filename)
+        fatal "File not found: #{filename}"
+      end
+    end
+
+    def subscribe(listname, email, fingerprint, adminflag=false)
+      res = post(url(:subscriptions, {list_id: listname}), {
+          email: email,
+          fingerprint: fingerprint.to_s,
+          admin: adminflag.to_s
+        })
+      if res && res['errors']
+        show_errors(res['errors'])
+      end
+    end
+
+    def show_errors(errors)
+      errors.each do |k,v|
+        if v
+          say "#{k.capitalize} #{v.join(', ')}"
+        else
+          say k
+        end
+      end
+      exit 1
+    end
   end
 end

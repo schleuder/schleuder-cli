@@ -19,28 +19,23 @@ module SchleuderConf
     long_desc 'Subscribe an email-address to a list, optionally setting the fingerprint and importing public keys from a file.'
     def new(listname, email, fingerprint=nil, keyfile=nil)
       if keyfile
-        if ! File.readable?(keyfile)
-          fatal "File not found: #{keyfile}"
-        else
-          keydata = File.read(keyfile)
-        end
-      end
-      res = post(url(:subscriptions, {list_id: listname}), {
-          email: email,
-          fingerprint: fingerprint.to_s
-        })
-      if res && res['errors']
-        res['errors'].each do |k,v|
-          say "#{k.capitalize} #{v.join(', ')}"
-        end
-        exit 1
+        test_file(keyfile)
       end
 
-      say "#{email} subscribed to #{listname}"
-      if keydata
-        res = post(url(:keys, {list_id: listname}), {ascii: keydata})
-        say res if res
+      subscribe(listname, email, fingerprint)
+      say "#{email} subscribed to #{listname} with fingerprint 0x#{fingerprint}."
+
+      if keyfile
+        import_result = import_key(listname, keyfile)
+        if import_result['considered'] < 1
+          say "#{keyfile} did not contain any keys!"
+        else
+          import_result['imports'].each do |import_status|
+            say "Key 0x#{import_status['fpr']}: #{import_status['action']}"
+          end
+        end
       end
+
     end
 
     desc 'list-options', 'List available options for subscriptions.'
