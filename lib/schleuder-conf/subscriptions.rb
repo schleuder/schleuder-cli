@@ -8,9 +8,9 @@ module SchleuderConf
       subscriptions = get(url(:subscriptions, {list_id: listname}))
       subscriptions.each do |subscription|
         email = subscription['email']
-        fingerprint = subscription['fingerprint'] || 'N/A'
+        fingerprint = subscription['fingerprint'].empty? ? 'N/A' : subscription['fingerprint']
         admin = subscription['admin'] ? 'admin' : ''
-        say "#{email}\t#{fingerprint}\t#{admin}"
+        say "#{email}\t#{fingerprint}\t#{admin}\n"
       end
       say "\n"
     end
