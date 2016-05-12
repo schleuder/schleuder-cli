@@ -145,7 +145,10 @@ module SchleuderConf
     def import_key(listname, keyfile)
       test_file(keyfile)
       keydata = File.read(keyfile)
-      post(url(:keys, {list_id: listname}), {ascii: keydata})
+      if ! keydata.match('BEGIN PGP')
+        keydata = Base64.encode64(keydata)
+      end
+      post(url(:keys, {list_id: listname}), {keymaterial: keydata})
     end
 
     def test_file(filename)
