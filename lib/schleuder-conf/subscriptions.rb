@@ -23,7 +23,14 @@ module SchleuderConf
       end
 
       subscribe(listname, email, fingerprint)
-      say "#{email} subscribed to #{listname} with fingerprint 0x#{fingerprint}."
+
+      text = say "#{email} subscribed to #{listname} "
+      if fingerprint
+        text << "with fingerprint 0x#{fingerprint}."
+      else
+        text << "without setting a fingerprint."
+      end
+      say text
 
       if keyfile
         import_result = import_key(listname, keyfile)
