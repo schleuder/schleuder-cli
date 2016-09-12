@@ -12,13 +12,19 @@ Requirements
 
 Installation
 ------------
-`gem install schleuder-conf`
 
-or
+1. Download [the gem](https://schleuder.nadir.org/download/schleuder-conf-0.0.1.beta3.gem) and [the OpenPGP-signature](https://schleuder.nadir.org/download/schleuder-conf-0.0.1.beta3.gem.sig) and verify:
+   ```
+   gpg --recv-key 0x75C9B62688F93AC6574BDE7ED8A6EF816E1C6F25
+   gpg --verify schleuder-conf-0.0.1.beta3.gem.sig
+   ```
 
-`cd schleuder-conf && bundle install`
+2. If all went well install the gem:
+   ```
+   gem install schleuder-conf-0.0.1.beta3.gem
+   ```
 
-You probably want to install schleuder, too. Without schleuder, this software is very useless.
+You probably want to install [schleuder](https://git.codecoop.org/schleuder/schleuder3), too. Without schleuder, this software is very useless.
 
 Usage
 -----
