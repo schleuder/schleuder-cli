@@ -85,6 +85,7 @@ module SchleuderConf
       debug "API response headers: #{resp.to_hash.inspect}"
       debug "API response body: #{resp.body}"
       handle_response_errors(resp)
+      handle_response_messages(resp)
       parse_body(resp.body)
     rescue Errno::ECONNREFUSED
       fatal "Error: Cannot connect to schleuderd at #{api.address}:#{api.port}, please check if it's running."
@@ -109,6 +110,13 @@ module SchleuderConf
         end
       when 500
         fatal 'Server error, try again later'
+      end
+    end
+
+    def handle_response_messages(response)
+      messages = response.header['X-Messages'].to_s.gsub('//', "\n")
+      if ! messages.empty?
+        say "\n ! Notice: #{messages}\n\n"
       end
     end
 
