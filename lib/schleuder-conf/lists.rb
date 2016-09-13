@@ -56,11 +56,14 @@ module SchleuderConf
       end
     end
 
-    desc 'delete <list@hostname>', 'Delete the list.'
-    def delete(listname)
-      answer = ask "Really delete list including all its data? [yN] "
-      if answer.downcase != 'y'
-        exit 0
+    desc 'delete <list@hostname> [--YES]', "Delete the list. To skip confirmation use --YES"
+    def delete(listname, dontask=nil)
+      if dontask != '--YES'
+        answer = ask "Really delete list including all its data? [yN] "
+        if answer.downcase != 'y'
+          say "Not deleted."
+          exit 0
+        end
       end
       say delete_req(url(:lists, listname))
     end
