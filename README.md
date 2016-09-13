@@ -13,7 +13,7 @@ Requirements
 Installation
 ------------
 
-1. Download [the gem](https://schleuder.nadir.org/download/schleuder-conf-0.0.1.beta4.gem) and [the OpenPGP-signature](https://schleuder.nadir.org/download/schleuder-conf-0.0.1.beta4.gem.sig) and verify:
+1. Download [the gem](https://git.codecoop.org/schleuder/schleuder-conf/raw/master/gems/schleuder-conf-0.0.1.beta4.gem) and [the OpenPGP-signature](https://git.codecoop.org/schleuder/schleuder-conf/raw/master/gems/schleuder-conf-0.0.1.beta4.gem.sig) and verify:
    ```
    gpg --recv-key 0x75C9B62688F93AC6574BDE7ED8A6EF816E1C6F25
    gpg --verify schleuder-conf-0.0.1.beta4.gem.sig
