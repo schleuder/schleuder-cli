@@ -84,26 +84,32 @@ module SchleuderConf
       debug "Response from API: #{resp.inspect}"
       debug "API response headers: #{resp.to_hash.inspect}"
       debug "API response body: #{resp.body}"
-      case resp.code.to_i
+      handle_response_errors(resp)
+      parse_body(resp.body)
+    rescue Errno::ECONNREFUSED
+      fatal "Error: Cannot connect to schleuderd at #{api.address}:#{api.port}, please check if it's running."
+    rescue Net::ReadTimeout => exc
+      error "Error: Timeout while waiting for server."
+      # If you set the timeout explicitly you'll have the exception passed on
+      # in order to react explicitly, too.
+      if timeout.to_i > 0
+        raise exc
+      end
+    end
+
+    def handle_response_errors(response)
+      case response.code.to_i
       when 404
-        fatal resp.body
+        fatal response.body
       when 400
-        if body = parse_body(resp.body)
+        if body = parse_body(response.body)
           fatal "Error: #{body['errors']}"
         else
           fatal "Unknown error"
         end
       when 500
         fatal 'Server error, try again later'
-      else
-        parse_body(resp.body)
       end
-    rescue Errno::ECONNREFUSED
-      fatal "Error: Cannot connect to schleuderd at #{api.address}:#{api.port}, please check if it's running."
-      exit 1
-    rescue Net::ReadTimeout
-      fatal "Error: Timeout while waiting for server."
-      exit 1
     end
 
     def parse_body(body)
