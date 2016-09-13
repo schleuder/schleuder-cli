@@ -40,10 +40,10 @@ module SchleuderConf
       request(req)
     end
 
-    def post(url, payload)
+    def post(url, payload, &block)
       req = Net::HTTP::Post.new(url)
       req.body = payload.to_json
-      request(req)
+      request(req, &block)
     end
 
     def put(url, payload)
@@ -75,12 +75,16 @@ module SchleuderConf
       end
     end
 
-    def request(req)
+    def request(req, &block)
       debug "Request to API: #{req.inspect}"
       debug "API request path: #{req.path.inspect}"
       debug "API request headers: #{req.to_hash.inspect}"
       debug "API request body: #{req.body.inspect}"
-      resp = api.request(req)
+      if block
+        resp = block.call(api, req)
+      else
+        resp = api.request(req)
+      end
       debug "Response from API: #{resp.inspect}"
       debug "API response headers: #{resp.to_hash.inspect}"
       debug "API response body: #{resp.body}"
