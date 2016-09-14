@@ -59,7 +59,7 @@ module SchleuderConf
 
     desc 'set <list@hostname> <option> <value>', 'Get or set the value of a list-option.'
     def set(listname, option, value)
-      if patch(url(:lists, listname, {option => value}))
+      if patch(url(:lists, listname), {option => value})
         show_value(value)
       end
     end

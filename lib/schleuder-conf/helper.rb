@@ -52,7 +52,7 @@ module SchleuderConf
       request(req)
     end
 
-    def patch(url, value)
+    def patch(url, payload)
       req = Net::HTTP::Patch.new(url)
       req.body = payload.to_json
       request(req)
