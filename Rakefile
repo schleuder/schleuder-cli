@@ -9,21 +9,28 @@ task :gem => :check_version
 task :git_tag => :check_version
 
 desc "Build new version: git-tag and gem-file"
-task :build => [:gem, :edit_readme, :git_tag] do
-
+task :new_version => [:gem, :edit_readme, :git_commit_version, :git_tag] do
 end
 
 desc "Edit README"
 task :edit_readme do
   say "Please edit the README to refer to version #{version}"
-  `gvim -f README.md`
-  `git commit README.md -m "Reference #{version} in README"`
+  if system('gvim -f README.md')
+    `git add README.md`
+  else
+    exit 1
+  end
 end
 
-desc 'git-tag HEAD as new version and push to origin'
+desc 'git-tag HEAD as new version'
 task :git_tag do
   `git tag -u #{gpguid} -s -m "Version #{version}" #{tagname}`
-  #`git push && git push --tags`
+end
+
+desc "Commit changes as new version"
+task :git_commit_version do
+  `git add lib/#{project}/version.rb`
+  `git commit -m "Version #{version} (README, gems)"`
 end
 
 desc 'Build, sign and commit a gem-file.'
@@ -33,7 +40,6 @@ task :gem do
   `mv -iv #{gemfile} gems/`
   `cd gems && gpg -u #{gpguid} -b #{gemfile}`
   `git add gems/#{gemfile}*`
-  `git commit -m "Gem-file and OpenPGP-sig for #{version}"`
 end
 
 desc 'Check if version-tag already exists'
