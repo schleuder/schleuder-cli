@@ -15,8 +15,8 @@ module SchleuderConf
       end
     end
 
-    desc 'show <list@hostname>', "List keys available to list."
-    def show(listname)
+    desc 'list <list@hostname>', "List keys available to list."
+    def list(listname)
       if keys = get(url(:keys, {list_id: listname}))
         keys.each do |hash|
           say "0x#{hash['fingerprint']} #{hash['email']}"
