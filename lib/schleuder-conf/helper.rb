@@ -186,12 +186,13 @@ module SchleuderConf
           admin: adminflag.to_s
         })
       if res && res['errors']
+        print "Error subscribing #{email}: "
         show_errors(res['errors'])
       end
     end
 
     def show_errors(errors)
-      errors.each do |k,v|
+      Array(errors).each do |k,v|
         if v
           say "#{k.capitalize} #{v.join(', ')}"
         else
