@@ -118,9 +118,13 @@ module SchleuderConf
     end
 
     def handle_response_messages(response)
-      messages = response.header['X-Messages'].to_s.gsub('//', "\n")
+      messages = response.header['X-Messages'].to_s.split(' // ')
       if ! messages.empty?
-        say "\n ! Notice: #{messages}\n\n"
+        say "\n"
+        messages.each do |message|
+          say " ! #{message}"
+        end
+        say "\n"
       end
     end
 
