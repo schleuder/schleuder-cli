@@ -24,7 +24,7 @@ module SchleuderConf
 
       subscribe(listname, email, fingerprint)
 
-      text = say "#{email} subscribed to #{listname} "
+      text = "#{email} subscribed to #{listname} "
       if fingerprint
         text << "with fingerprint 0x#{fingerprint}."
       else
