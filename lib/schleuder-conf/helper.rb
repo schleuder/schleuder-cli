@@ -58,12 +58,6 @@ module SchleuderConf
       request(req)
     end
 
-    # 'options' is reserved by Thor
-    def options_req(url)
-      req = Net::HTTP::Options.new(url)
-      request(req)
-    end
-
     def delete_req(url)
       req = Net::HTTP::Delete.new(url)
       request(req)

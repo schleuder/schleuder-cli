@@ -47,7 +47,7 @@ module SchleuderConf
 
     desc 'list-options', 'List available options for subscriptions.'
     def list_options()
-      say options_req(url(:subscriptions)).join("\n")
+      say get(url(:subscriptions, 'configurable_attributes')).join("\n")
     end
 
     desc 'show <list@hostname> <user@hostname> <option>', 'Get the value of a subscription-option'

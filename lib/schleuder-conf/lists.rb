@@ -48,7 +48,7 @@ module SchleuderConf
 
     desc 'list-options', 'List available options for lists.'
     def list_options()
-      say options_req(url(:lists)).join("\n")
+      say get(url(:lists, 'configurable_attributes')).join("\n")
     end
 
     desc 'show <list@hostname> <option>', 'Get the value of a list-option.'
