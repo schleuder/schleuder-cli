@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    schleuder-conf (0.0.1.beta1)
+    schleuder-conf (0.0.1.beta7)
       thor (~> 0)
 
 GEM
@@ -16,4 +16,4 @@ DEPENDENCIES
   schleuder-conf!
 
 BUNDLED WITH
-   1.10.6
+   1.11.2
