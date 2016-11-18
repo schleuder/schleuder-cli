@@ -55,6 +55,7 @@ module SchleuderConf
     def patch(url, payload)
       req = Net::HTTP::Patch.new(url)
       req.body = payload.to_json
+      req.content_type = 'application/json'
       request(req)
     end
 
