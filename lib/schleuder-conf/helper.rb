@@ -87,7 +87,7 @@ module SchleuderConf
       handle_response_messages(resp)
       parse_body(resp.body)
     rescue Errno::ECONNREFUSED
-      fatal "Error: Cannot connect to schleuderd at #{api.address}:#{api.port}, please check if it's running."
+      fatal "Error: Cannot connect to Schleuder API at #{api.address}:#{api.port}, please check if it's running."
     rescue Net::ReadTimeout => exc
       error "Error: Timeout while waiting for server."
       # If you set the timeout explicitly you'll have the exception passed on

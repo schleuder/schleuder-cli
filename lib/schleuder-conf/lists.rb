@@ -19,7 +19,7 @@ module SchleuderConf
         begin
           http.request(request)
         rescue Net::ReadTimeout
-          fatal "Error: Timeout while waiting for server!\n\nSchleuderd didn't answer in time. This happens sometimes when creating a new list because generating a new OpenPGP key-pair requires a lot of randomness — if that's not given, GnuPG just waits until there's more.\nUnfortunately we can't know what the issue really is. But chances are that the list was created just fine and in a few minutes the new OpenPGP key-pair will have been generated, too. So please wait a little while and then have a look if your list was created."
+          fatal "Error: Timeout while waiting for Schleuder API!\n\nThe Schleuder API didn't answer in time. This happens sometimes when creating a new list because generating a new OpenPGP key-pair requires a lot of randomness — if that's not given, GnuPG just waits until there's more.\nUnfortunately we can't know what the issue really is. But chances are that the list was created just fine and in a few minutes the new OpenPGP key-pair will have been generated, too. So please wait a little while and then have a look if your list was created."
         end
       end
 
