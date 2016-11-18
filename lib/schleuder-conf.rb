@@ -20,4 +20,4 @@ require 'schleuder-conf/keys'
 require 'schleuder-conf/base'
 
 ENV['SCHLEUDER_CONF_ROOT'] = Pathname.new(__FILE__).dirname.dirname.realpath.to_s
-ENV["SCHLEUDER_CONF_CONFIG"] ||= File.join(ENV['HOME'], '.schleuder-conf/config.yml')
+ENV["SCHLEUDER_CONF_CONFIG"] ||= File.join(ENV['HOME'], '.schleuder-conf/schleuder-conf.yml')
