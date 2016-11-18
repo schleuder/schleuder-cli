@@ -59,6 +59,14 @@ module SchleuderConf
 
     desc 'set <list@hostname> <option> <value>', 'Get or set the value of a list-option.'
     def set(listname, option, value)
+      case option
+      when 'headers_to_meta', 'keywords_admin_notify', 'keywords_admin_only', 'bounces_drop_on_headers'
+        if %w([{).include?(value.strip[0])
+          value = JSON.parse(value)
+        else
+          value = value.split(',').map(&:strip)
+        end
+      end
       if patch(url(:lists, listname), {option => value})
         show_value(value)
       end
