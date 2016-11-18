@@ -3,7 +3,7 @@ Schleuder-conf
 
 A command line tool to configure schleuder-lists.
 
-Schleuder-conf enables creating, configuring, and deleting schleuder-lists, subscriptions, keys, etc. Currently it must be run on the same system that runs the schleuderd.
+Schleuder-conf enables creating, configuring, and deleting schleuder-lists, subscriptions, keys, etc.
 
 Requirements
 ------------

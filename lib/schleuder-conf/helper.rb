@@ -3,20 +3,16 @@ module SchleuderConf
 
     def api
       @http ||= begin
-          # The hostname and ssl-usage will be configurable in the
-          # future. We must tighten and ssl-enable schleuderd
-          # before.
-          host = 'localhost'
-          http = Net::HTTP.new(host, options.port)
-          #ssl = false
-          #if ssl
-          #  http.use_ssl = true
-          #  http.verify_mode = OpenSSL::SSL::VERIFY_PEER
-          #  # TODO: Fix path
-          #  pem = File.read("/path/to/my.pem")
-          #  http.cert = OpenSSL::X509::Certificate.new(pem)
-          #  http.key = OpenSSL::PKey::RSA.new(pem)
-          #end
+          host = Conf.api['host']
+          port = Conf.api['port']
+          http = Net::HTTP.new(host, port)
+          if Conf.api_use_tls?
+            require 'openssl_ssl_patch'
+            http.use_ssl = true
+            http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+            http.verify_callback = lambda { |*a| ssl_verify_callback(*a) }
+            #http.ca_file = Conf.api_cert_file
+          end
           http
         end
     end
@@ -71,6 +67,10 @@ module SchleuderConf
     end
 
     def request(req, &block)
+      test_mandatory_config
+      if Conf.api_use_tls? || Conf.api['host'] == 'localhost'
+        req.basic_auth 'schleuder', Conf.api_key
+      end
       debug "Request to API: #{req.inspect}"
       debug "API request path: #{req.path.inspect}"
       debug "API request headers: #{req.to_hash.inspect}"
@@ -95,12 +95,26 @@ module SchleuderConf
       if timeout.to_i > 0
         raise exc
       end
+    rescue OpenSSL::SSL::SSLError => exc
+      case exc.message
+      when /certificate verify failed/
+        fatal exc.message.split('state=').last.capitalize
+      when /read server hello A: unknown protocol/
+        fatal "Error: Trying to connect via TLS but API is not served via TLS, check your settings."
+      else
+        fatal exc.message
+      end
+    rescue EOFError => exc
+      # TODO: Find a better way to catch this.
+      fatal "Error: Trying to connect without TLS but API is served via TLS, check your settings."
     end
 
     def handle_response_errors(response)
       case response.code.to_i
       when 404
         fatal response.body
+      when 401
+        fatal "Authentication failed, please check your API key."
       when 400
         if body = parse_body(response.body)
           fatal "Error: #{body['errors']}"
@@ -195,6 +209,31 @@ module SchleuderConf
         end
       end
       exit 1
+    end
+
+    def ssl_verify_callback(pre_ok, cert_store)
+      cert = cert_store.chain[0]
+      # Only really compare if we're looking at the last cert in the chain.
+      if cert.to_der != cert_store.current_cert.to_der
+        return true
+      end
+      fingerprint = OpenSSL::Digest::SHA256.new(cert.to_der).to_s
+      fingerprint == Conf.api['tls_fingerprint']
+    end
+
+    def test_mandatory_config
+      if Conf.api['tls_fingerprint'].to_s.empty?
+        fatal "Error: 'tls_fingerprint' is empty, can't verify remote server without it (in #{ENV['SCHLEUDER_CONF_CONFIG']})."
+      end
+      if Conf.api['host'].to_s.empty?
+        fatal "Error: 'host' is empty, can't connect (in #{ENV['SCHLEUDER_CONF_CONFIG']})."
+      end
+      if Conf.api['port'].to_s.empty?
+        fatal "Error: 'port' is empty, can't connect (in #{ENV['SCHLEUDER_CONF_CONFIG']})."
+      end
+      if Conf.api_key.empty? && Conf.api_use_tls?
+        fatal "Error: 'api_key' is empty but required if 'use_tls' is true (in #{ENV['SCHLEUDER_CONF_CONFIG']})."
+      end
     end
   end
 end

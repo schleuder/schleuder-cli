@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.email        = "schleuder2@nadir.org"
   s.homepage     = "http://schleuder.nadir.org/"
   s.summary      = "A command line tool to configure schleuder-lists."
-  s.description  = "Schleuder-conf enables creating, configuring, and deleting schleuder-lists, subscriptions, keys, etc. Currently it must be run on the same system that runs the schleuderd."
+  s.description  = "Schleuder-conf enables creating, configuring, and deleting schleuder-lists, subscriptions, keys, etc."
   s.files        = `git ls-files lib README.md`.split
   s.executables =  `git ls-files bin`.split.map {|file| File.basename(file) }
   s.platform     = Gem::Platform::RUBY
