@@ -37,9 +37,4 @@ E.g.:
       schleuder-conf keys ...           # Manage OpenPGP-keys
       schleuder-conf lists ...          # Create and configure lists
       schleuder-conf subscriptions ...  # Create and manage subscriptions
-      schleuder-conf version            # Show version of schleuder-conf or schleuderd.
-
-    Options:
-      -p, [--port=<number>]  # The port schleuderd is listening at.
-                             # Default: 4567
-
+      schleuder-conf version            # Show version of schleuder-conf or Schleuder.
