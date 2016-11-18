@@ -2,8 +2,6 @@ module SchleuderConf
   class Base < Thor
     include Helper
 
-    class_option :port, aliases: '-p', default: 4567, banner: '<number>', desc: 'The port schleuderd is listening at.'
-
     register(Subscriptions,
              'subscriptions',
              'subscriptions ...',
