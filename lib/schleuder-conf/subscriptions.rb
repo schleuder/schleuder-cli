@@ -57,7 +57,7 @@ module SchleuderConf
 
     desc 'set <list@hostname> <user@hostname> <option> <value>', 'Set the value of a subscription-option'
     def set(listname, email, option, value=nil)
-      put(url(:subscriptions, email, {list_id: listname}), {option => value})
+      patch(url(:subscriptions, email, {list_id: listname}), {option => value})
       show_value(value)
     end
 
