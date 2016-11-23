@@ -3,5 +3,4 @@ api:
   port: 4443
   use_tls: false
   fingerprint:
-  remote_cert_file: ~/.schleuder-conf/schleuder-certificate.pem
 api_key:
