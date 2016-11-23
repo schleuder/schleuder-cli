@@ -59,12 +59,12 @@ module SchleuderConf
 
     desc 'set <list@hostname> <option> <value>', 'Get or set the value of a list-option.'
     def set(listname, option, value)
-      case option
-      when 'headers_to_meta', 'keywords_admin_notify', 'keywords_admin_only', 'bounces_drop_on_headers'
-        if %w([{).include?(value.strip[0])
+      if option.start_with?('headers_to_meta', 'keywords_admin_notify', 'keywords_admin_only', 'bounces_drop_on_headers')
+        begin
           value = JSON.parse(value)
-        else
-          value = value.split(',').map(&:strip)
+        rescue => exc
+          error "Parsing value as JSON failed: #{exc.message}"
+          fatal "Input must be valid JSON."
         end
       end
       patch(url(:lists, listname), {option => value})
