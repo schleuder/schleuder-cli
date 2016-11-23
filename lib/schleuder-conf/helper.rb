@@ -39,6 +39,7 @@ module SchleuderConf
     def post(url, payload, &block)
       req = Net::HTTP::Post.new(url)
       req.body = payload.to_json
+      req.content_type = 'application/json'
       request(req, &block)
     end
 
