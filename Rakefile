@@ -3,7 +3,7 @@ require_relative "lib/#{project}.rb"
 
 version = SchleuderConf::VERSION
 tagname = "#{project}-#{version}"
-gpguid = 'schleuder2@nadir.org'
+gpguid = 'schleuder@nadir.org'
 
 task :gem => :check_version
 task :git_tag => :check_version
