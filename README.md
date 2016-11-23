@@ -33,7 +33,7 @@ SchleuderConf reads its settings from a file that it by default expects at `$HOM
 
     SCHLEUDER_CONF_CONFIG=/usr/local/etc/schleuder-conf.yml schleuder-conf ...
 
-The configuration file specifies how to connect to the Schleuder API. To see an example have a look at the [defaults file](/schleuder/schleuder-conf/raw/etc/schleuder-conf.yml).
+The configuration file specifies how to connect to the Schleuder API. To see an example have a look at the [defaults file](/etc/schleuder-conf.yml).
 
 If you didn't change the defaults in the Schleuder configuration file you don't need a configuration file for SchleuderConf.
 
