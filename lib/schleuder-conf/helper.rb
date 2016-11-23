@@ -157,9 +157,9 @@ module SchleuderConf
       when nil
         error "No such option"
       when Array, Hash
-        puts value.inspect
+        say value.inspect
       else
-        puts value
+        say value
       end
       exit
     end

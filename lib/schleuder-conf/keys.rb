@@ -32,7 +32,7 @@ module SchleuderConf
     desc 'check <list@hostname>', "Check for expiring or unusable keys."
     def check(listname)
       resp = get(url(:check_keys, {list_id: listname}))
-      puts resp['result']
+      say resp['result']
     end
   end
 end
