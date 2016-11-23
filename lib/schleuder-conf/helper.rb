@@ -43,12 +43,6 @@ module SchleuderConf
       request(req, &block)
     end
 
-    def put(url, payload)
-      req = Net::HTTP::Put.new(url)
-      req.body = payload.to_json
-      request(req)
-    end
-
     def patch(url, payload)
       req = Net::HTTP::Patch.new(url)
       req.body = payload.to_json
