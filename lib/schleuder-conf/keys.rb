@@ -10,7 +10,7 @@ module SchleuderConf
         say "#{keyfile} did not contain any keys!"
       else
         import_result['imports'].each do |import_status|
-          say "Key 0x#{import_status['fpr']}: #{import_status['action']}"
+          say "Key #{import_status['fpr']}: #{import_status['action']}"
         end
       end
     end
@@ -19,7 +19,7 @@ module SchleuderConf
     def list(listname)
       if keys = get(url(:keys, {list_id: listname}))
         keys.each do |hash|
-          say "0x#{hash['fingerprint']} #{hash['email']}"
+          say "#{hash['fingerprint']} #{hash['email']}"
         end
       end
     end

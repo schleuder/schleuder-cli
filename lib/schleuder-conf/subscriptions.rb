@@ -26,7 +26,7 @@ module SchleuderConf
 
       text = "#{email} subscribed to #{listname} "
       if fingerprint
-        text << "with fingerprint 0x#{fingerprint}."
+        text << "with fingerprint #{fingerprint}."
       else
         text << "without setting a fingerprint."
       end
@@ -38,7 +38,7 @@ module SchleuderConf
           say "#{keyfile} did not contain any keys!"
         else
           import_result['imports'].each do |import_status|
-            say "Key 0x#{import_status['fpr']}: #{import_status['action']}"
+            say "Key #{import_status['fpr']}: #{import_status['action']}"
           end
         end
       end

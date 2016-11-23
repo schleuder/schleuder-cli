@@ -33,7 +33,7 @@ module SchleuderConf
       case import_result['considered']
       when 1
         fingerprint = import_result['imports'].first['fpr']
-        say "Key 0x#{fingerprint} imported."
+        say "Key #{fingerprint} imported."
       when 0
         fingerprint = nil
         say "#{keyfile} did not contain any keys!"
