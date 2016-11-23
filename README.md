@@ -29,7 +29,13 @@ You probably want to install [schleuder](https://git.codecoop.org/schleuder/schl
 Configuration
 -------------
 
-TODO
+SchleuderConf reads its settings from a file that it by default expects at `$HOME/.schleuder-conf/schleuder-conf.yml`. To make it read a different file set the environment variable `SCHLEUDER_CONF_CONFIG` to the path to your file. E.g.:
+
+    SCHLEUDER_CONF_CONFIG=/usr/local/etc/schleuder-conf.yml schleuder-conf ...
+
+The configuration file specifies how to connect to the Schleuder API. To see an example have a look at the [defaults file](/schleuder/schleuder-conf/raw/etc/schleuder-conf.yml).
+
+If you didn't change the defaults in the Schleuder configuration file you don't need a configuration file for SchleuderConf.
 
 Usage
 -----
