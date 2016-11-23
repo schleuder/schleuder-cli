@@ -52,7 +52,9 @@ module SchleuderConf
 
     desc 'show <list@hostname> <user@hostname> <option>', 'Get the value of a subscription-option'
     def show(listname, email, option)
-      show_value get(url(:subscriptions, email, {list_id: listname}))[option]
+      subscription = get(url(:subscriptions, email, {list_id: listname}))
+      check_option_presence(subscription, option)
+      show_value(subscription[option])
     end
 
     desc 'set <list@hostname> <user@hostname> <option> <value>', 'Set the value of a subscription-option'

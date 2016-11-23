@@ -147,10 +147,14 @@ module SchleuderConf
       exit 1
     end
 
+    def check_option_presence(hash, option)
+      if ! hash.has_key?(option)
+        fatal "No such option"
+      end
+    end
+
     def show_value(value)
       case value
-      when nil
-        error "No such option"
       when Array, Hash
         say value.inspect
       else

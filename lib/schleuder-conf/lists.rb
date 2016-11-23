@@ -54,6 +54,7 @@ module SchleuderConf
     desc 'show <list@hostname> <option>', 'Get the value of a list-option.'
     def show(listname, option)
       list = get(url(:lists, listname))
+      check_option_presence(list, option)
       show_value(list[option])
     end
 
