@@ -67,9 +67,8 @@ module SchleuderConf
           value = value.split(',').map(&:strip)
         end
       end
-      if patch(url(:lists, listname), {option => value})
-        show_value(value)
-      end
+      patch(url(:lists, listname), {option => value})
+      show_value(value)
     end
 
     desc 'delete <list@hostname> [--YES]', "Delete the list. To skip confirmation use --YES"
