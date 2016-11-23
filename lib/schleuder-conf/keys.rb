@@ -15,6 +15,13 @@ module SchleuderConf
       end
     end
 
+    desc 'export <list@hostname> <fingerprint>', "Get the key exported from the list's keyring."
+    def export(listname, fingerprint)
+      if hash = get(url(:keys, fingerprint, {list_id: listname}))
+        say hash['ascii']
+      end
+    end
+
     desc 'list <list@hostname>', "List keys available to list."
     def list(listname)
       if keys = get(url(:keys, {list_id: listname}))
