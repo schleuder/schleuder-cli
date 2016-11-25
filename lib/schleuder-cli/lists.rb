@@ -1,4 +1,4 @@
-module SchleuderConf
+module SchleuderCli
   class Lists < Thor
     include Helper
     extend SubcommandFix

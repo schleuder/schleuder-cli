@@ -1,4 +1,4 @@
-module SchleuderConf
+module SchleuderCli
   class Base < Thor
     include Helper
 
@@ -18,7 +18,7 @@ module SchleuderConf
              'Create and configure lists')
 
     map '-v' => :version
-    desc 'version', "Show version of schleuder-conf or Schleuder."
+    desc 'version', "Show version of schleuder-cli or Schleuder."
     method_option :remote, aliases: '-r', banner: '', desc: "Show version of Schleuder at the server."
     def version
       if options.remote

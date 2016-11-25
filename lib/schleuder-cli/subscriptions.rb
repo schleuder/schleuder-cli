@@ -1,4 +1,4 @@
-module SchleuderConf
+module SchleuderCli
   class Subscriptions < Thor
     include Helper
     extend SubcommandFix

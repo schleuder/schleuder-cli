@@ -1,16 +1,16 @@
 # encoding: utf-8
 
 $: << File.expand_path('../lib', __FILE__)
-require 'schleuder-conf/version'
+require 'schleuder-cli/version'
 
 Gem::Specification.new do |s|
-  s.name         = "schleuder-conf"
-  s.version      = SchleuderConf::VERSION
+  s.name         = "schleuder-cli"
+  s.version      = SchleuderCli::VERSION
   s.authors      = %w(paz)
   s.email        = "schleuder2@nadir.org"
   s.homepage     = "http://schleuder.nadir.org/"
   s.summary      = "A command line tool to configure schleuder-lists."
-  s.description  = "Schleuder-conf enables creating, configuring, and deleting schleuder-lists, subscriptions, keys, etc."
+  s.description  = "Schleuder-cli enables creating, configuring, and deleting schleuder-lists, subscriptions, keys, etc."
   s.files        = `git ls-files lib README.md`.split
   s.executables =  `git ls-files bin`.split.map {|file| File.basename(file) }
   s.platform     = Gem::Platform::RUBY

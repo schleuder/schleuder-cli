@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/schleuder-cli'
+
+trap("INT") { exit 1 }
+
+SchleuderCli::Base.start

@@ -1,4 +1,4 @@
-module SchleuderConf
+module SchleuderCli
   class Keys < Thor
     extend SubcommandFix
     include Helper

@@ -1,4 +1,4 @@
-module SchleuderConf
+module SchleuderCli
   module Helper
 
     def api
@@ -57,7 +57,7 @@ module SchleuderConf
 
     def debug(msg)
       if $DEBUG
-        $stderr.puts "SchleuderConf: #{msg}"
+        $stderr.puts "SchleuderCli: #{msg}"
       end
     end
 
@@ -222,16 +222,16 @@ module SchleuderConf
 
     def test_mandatory_config
       if Conf.api['tls_fingerprint'].to_s.empty?
-        fatal "Error: 'tls_fingerprint' is empty, can't verify remote server without it (in #{ENV['SCHLEUDER_CONF_CONFIG']})."
+        fatal "Error: 'tls_fingerprint' is empty, can't verify remote server without it (in #{ENV['SCHLEUDER_CLI_CONFIG']})."
       end
       if Conf.api['host'].to_s.empty?
-        fatal "Error: 'host' is empty, can't connect (in #{ENV['SCHLEUDER_CONF_CONFIG']})."
+        fatal "Error: 'host' is empty, can't connect (in #{ENV['SCHLEUDER_CLI_CONFIG']})."
       end
       if Conf.api['port'].to_s.empty?
-        fatal "Error: 'port' is empty, can't connect (in #{ENV['SCHLEUDER_CONF_CONFIG']})."
+        fatal "Error: 'port' is empty, can't connect (in #{ENV['SCHLEUDER_CLI_CONFIG']})."
       end
       if Conf.api_key.empty? && Conf.api_use_tls?
-        fatal "Error: 'api_key' is empty but required if 'use_tls' is true (in #{ENV['SCHLEUDER_CONF_CONFIG']})."
+        fatal "Error: 'api_key' is empty but required if 'use_tls' is true (in #{ENV['SCHLEUDER_CLI_CONFIG']})."
       end
     end
   end

@@ -1,9 +1,9 @@
-module SchleuderConf
+module SchleuderCli
   class Conf
     include Singleton
 
     def config
-      @config ||= self.class.load_config('schleuder-conf', ENV['SCHLEUDER_CONF_CONFIG'])
+      @config ||= self.class.load_config('schleuder-cli', ENV['SCHLEUDER_CLI_CONFIG'])
     end
 
     def self.load_config(defaults_basename, filename)
@@ -26,11 +26,11 @@ module SchleuderConf
     def self.api_cert_file
       path = api['remote_cert_file'].to_s
       if path.empty?
-        fatal "Error: remote_cert_file is empty, can't verify remote server without it (in #{ENV['SCHLEUDER_CONF_CONFIG']})."
+        fatal "Error: remote_cert_file is empty, can't verify remote server without it (in #{ENV['SCHLEUDER_CLI_CONFIG']})."
       end
       file = Pathname.new(api['remote_cert_file'].to_s).expand_path
       if ! file.readable?
-        fatal "Error: remote_cert_file is set to a not readable file (in #{ENV['SCHLEUDER_CONF_CONFIG']})."
+        fatal "Error: remote_cert_file is set to a not readable file (in #{ENV['SCHLEUDER_CLI_CONFIG']})."
       end
       file.to_s
     end
@@ -59,7 +59,7 @@ module SchleuderConf
     end
 
     def self.load_defaults(basename)
-      file = Pathname.new(ENV['SCHLEUDER_CONF_ROOT']).join("etc/#{basename}.yml")
+      file = Pathname.new(ENV['SCHLEUDER_CLI_ROOT']).join("etc/#{basename}.yml")
       if ! file.readable?
         raise RuntimError, "Error: '#{file}' is not a readable file."
       end

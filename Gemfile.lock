@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    schleuder-conf (0.0.1.beta7)
+    schleuder-cli (0.0.1.beta9)
       thor (~> 0)
 
 GEM
@@ -13,7 +13,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  schleuder-conf!
+  schleuder-cli!
 
 BUNDLED WITH
    1.11.2

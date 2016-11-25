@@ -1,7 +1,7 @@
-project = 'schleuder-conf'
+project = 'schleuder-cli'
 require_relative "lib/#{project}.rb"
 
-version = SchleuderConf::VERSION
+version = SchleuderCli::VERSION
 tagname = "#{project}-#{version}"
 gpguid = 'schleuder@nadir.org'
 
