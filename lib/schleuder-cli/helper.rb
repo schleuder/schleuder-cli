@@ -221,17 +221,20 @@ module SchleuderCli
     end
 
     def test_mandatory_config
-      if Conf.api['tls_fingerprint'].to_s.empty?
-        fatal "Error: 'tls_fingerprint' is empty, can't verify remote server without it (in #{ENV['SCHLEUDER_CLI_CONFIG']})."
-      end
       if Conf.api['host'].to_s.empty?
         fatal "Error: 'host' is empty, can't connect (in #{ENV['SCHLEUDER_CLI_CONFIG']})."
       end
       if Conf.api['port'].to_s.empty?
         fatal "Error: 'port' is empty, can't connect (in #{ENV['SCHLEUDER_CLI_CONFIG']})."
       end
-      if Conf.api_key.empty? && Conf.api_use_tls?
-        fatal "Error: 'api_key' is empty but required if 'use_tls' is true (in #{ENV['SCHLEUDER_CLI_CONFIG']})."
+
+      if Conf.api_use_tls?
+        if Conf.api['tls_fingerprint'].to_s.empty?
+          fatal "Error: 'tls_fingerprint' is empty but required if 'use_tls' is true (in #{ENV['SCHLEUDER_CLI_CONFIG']})."
+        end
+        if Conf.api_key.empty?
+          fatal "Error: 'api_key' is empty but required if 'use_tls' is true (in #{ENV['SCHLEUDER_CLI_CONFIG']})."
+        end
       end
     end
   end
