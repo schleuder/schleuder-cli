@@ -61,9 +61,15 @@ module SchleuderCli
     def self.load_defaults(basename)
       file = Pathname.new(ENV['SCHLEUDER_CLI_ROOT']).join("etc/#{basename}.yml")
       if ! file.readable?
-        raise RuntimError, "Error: '#{file}' is not a readable file."
+        fatal "Error: '#{file}' is not a readable file."
       end
       load_config_file(file)
     end
+
+    def self.fatal(msg)
+      $stderr.puts msg
+      exit 1
+    end
+
   end
 end
