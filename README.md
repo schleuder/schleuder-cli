@@ -13,15 +13,15 @@ Requirements
 Installation
 ------------
 
-1. Download [the gem](https://git.codecoop.org/schleuder/schleuder-cli/raw/master/gems/schleuder-cli-0.0.1.beta10.gem) and [the OpenPGP-signature](https://git.codecoop.org/schleuder/schleuder-cli/raw/master/gems/schleuder-cli-0.0.1.beta10.gem.sig) and verify:
+1. Download [the gem](https://git.codecoop.org/schleuder/schleuder-cli/raw/master/gems/schleuder-cli-0.0.1.beta11.gem) and [the OpenPGP-signature](https://git.codecoop.org/schleuder/schleuder-cli/raw/master/gems/schleuder-cli-0.0.1.beta11.gem.sig) and verify:
    ```
    gpg --recv-key 0xB3D190D5235C74E1907EACFE898F2C91E2E6E1F3
-   gpg --verify schleuder-cli-0.0.1.beta10.gem.sig
+   gpg --verify schleuder-cli-0.0.1.beta11.gem.sig
    ```
 
 2. If all went well install the gem:
    ```
-   gem install schleuder-cli-0.0.1.beta10.gem
+   gem install schleuder-cli-0.0.1.beta11.gem
    ```
 
 You probably want to install [schleuder](https://git.codecoop.org/schleuder/schleuder3), too. Without schleuder, this software is very useless.

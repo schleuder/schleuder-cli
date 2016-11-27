@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    schleuder-cli (0.0.1.beta9)
+    schleuder-cli (0.0.1.beta11)
       thor (~> 0)
 
 GEM
