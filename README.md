@@ -51,3 +51,9 @@ E.g.:
       schleuder-cli lists ...          # Create and configure lists
       schleuder-cli subscriptions ...  # Create and manage subscriptions
       schleuder-cli version            # Show version of schleuder-cli or Schleuder.
+
+
+Alternative Download
+--------------------
+
+Alternatively to the gem-files you can download the latest release as [a tarball](https://git.codecoop.org/schleuder/schleuder-cli/raw/master/gems/schleuder-cli-0.0.1.beta11.tar.gz) and [its OpenPGP-signature](https://git.codecoop.org/schleuder/schleuder-cli/raw/master/gems/schleuder-cli-0.0.1.beta11.tar.gz.sig).
