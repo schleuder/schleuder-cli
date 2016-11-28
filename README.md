@@ -1,9 +1,11 @@
 Schleuder-cli
 ==============
 
-A command line tool to configure schleuder-lists.
+A command line tool to create and manage schleuder-lists.
 
-Schleuder-cli enables creating, configuring, and deleting schleuder-lists, subscriptions, keys, etc.
+Schleuder-cli enables creating, configuring, and deleting lists, subscriptions, keys, etc. It uses the Schleuder API, either unencrypted via localhost (default) or TLS-encrypted via any network.
+
+It does *not* authorize access. Only people who are supposed to have full access to all lists should be allowed to use it on/with your server.
 
 Requirements
 ------------
