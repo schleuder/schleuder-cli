@@ -1,0 +1,78 @@
+schleuder-cli(8)
+================
+
+## NAME
+
+schleuder-cli - manage `schleuder`(8)-lists, subscriptions, and keys.
+
+## SYNOPSIS
+
+`schleuder-cli` <cmd> <args...>
+
+`schleuder-cli` help
+
+## DESCRIPTION
+
+schleuder-cli is a command line tool to create, configure, and delete schleuder-lists, subscriptions, and OpenPGP-keys.
+
+It uses the `schleuder`(8) API, provided by `schleuder-api-daemon`(8), either unencrypted via localhost (default) or TLS-encrypted via the network.
+
+If TLS is used, authentication and TLS-verification is mandatory. You need the fingerprint of the TLS-certificate of `schleuder-api-daemon`(8) and an API-key. Both should be provided by the administrators of `schleuer-api-daemon`(8).
+
+schleuder-cli does *not* authorize access. Only people who are supposed to have full access to all lists should be allowed to use it on/with your server.
+
+
+## ENVIRONMENT
+
+### Configuration
+
+
+SchleuderCli reads its settings from a file that it by default expects at `$HOME/.schleuder-cli/schleuder-cli.yml`. To make it read a different file set the environment variable `SCHLEUDER_CLI_CONFIG` to the path to your file. E.g.:
+
+    SCHLEUDER_CLI_CONFIG=/usr/local/etc/schleuder-cli.yml schleuder-cli ...
+
+The configuration file specifies how to connect to the Schleuder API. See below for its default values.
+
+If you didn't change the defaults in the Schleuder configuration file you don't need a configuration file for SchleuderCli.
+
+### Default values
+
+These are the default configuration settings:
+
+    api:
+      host: localhost
+      port: 4443
+      use_tls: false
+      tls_fingerprint:
+    api_key:
+
+
+## FILES
+
+ * `$HOME/.schleuder-cli/schleuder-cli.yml`:
+   default path of schleuder-cli configuration file.
+
+The configuration file is formatted as YAML. See
+<http://www.yaml.org/> for more details.
+
+## BUGS
+
+Known bugs are listed on the schleuder-cli bugtracker at
+<https://codecoop.org/schleuder/schleuder-cli>
+
+## SEE ALSO
+
+`schleuder`(8),
+`schleuder-api-daemon`(8).
+
+ * Website of `schleuder-cli`:
+   <https://codecoop.org/schleuder/schleuder-cli/>
+
+ * Website of `schleuder`:
+   <https://schleuder.nadir.org/>
+
+ * More extensive documentation for `schleuder`:
+   <https://schleuder.nadir.org/docs/>
+
+ * `schleuder-web`, the web interface for list-management:
+   <https://codecoop.org/schleuder/schleuder-web/>
