@@ -53,6 +53,18 @@ E.g.:
       schleuder-cli version            # Show version of schleuder-cli or Schleuder.
 
 
+Contributing
+------------
+
+Please see [CONTRIBUTING.md](CONTRIBUTING.md).
+
+
+License
+-------
+
+GNU GPL 3.0. Please see [LICENSE.txt](LICENSE.txt).
+
+
 Alternative Download
 --------------------
 
