@@ -16,10 +16,10 @@ schleuder\-cli \- manage \fBschleuder\fR(8)\-lists, subscriptions, and keys\.
 schleuder\-cli is a command line tool to create, configure, and delete schleuder\-lists, subscriptions, and OpenPGP\-keys\.
 .
 .P
-It uses the \fBschleuder\fR(8) API, provided by \fBschleuder\-api\-daemon\fR(8), either unencrypted via localhost (default) or TLS\-encrypted via the network\.
+It uses the \fBschleuder\fR(8) API, provided by \fBschleuder\-api\-daemon\fR(8), either unencrypted via localhost (default) or TLS\-encrypted remotely\.
 .
 .P
-If TLS is used, authentication and TLS\-verification is mandatory\. You need the fingerprint of the TLS\-certificate of \fBschleuder\-api\-daemon\fR(8) and an API\-key\. Both should be provided by the administrators of \fBschleuer\-api\-daemon\fR(8)\.
+If TLS is used, authentication and TLS\-verification is mandatory\. You need the fingerprint of the TLS\-certificate of \fBschleuder\-api\-daemon\fR(8) and an API\-key\. Both should be provided by the operators of \fBschleuer\-api\-daemon\fR(8)\.
 .
 .P
 schleuder\-cli does \fInot\fR authorize access\. Only people who are supposed to have full access to all lists should be allowed to use it on/with your server\.
@@ -40,28 +40,33 @@ SCHLEUDER_CLI_CONFIG=/usr/local/etc/schleuder\-cli\.yml schleuder\-cli \.\.\.
 .IP "" 0
 .
 .P
-The configuration file specifies how to connect to the Schleuder API\. See below for its default values\.
+The configuration file specifies how to connect to the Schleuder API\. If it doesn\'t exist, it will be filled with the default settings\.
 .
 .P
-If you didn\'t change the defaults in the Schleuder configuration file you don\'t need a configuration file for SchleuderCli\.
+The default settings will work out of the box with the default settings of Schleuder if both are running on the same host\.
 .
-.SS "Default values"
-These are the default configuration settings:
+.SS "Options"
+These are the configuration file options and their default values:
 .
-.IP "" 4
+.TP
+\fBhost\fR
+The hostname (or IP\-address) to connect to\. Default: \fIlocalhost\fR\.
 .
-.nf
-
-api:
-  host: localhost
-  port: 4443
-  use_tls: false
-  tls_fingerprint:
-api_key:
+.TP
+\fBpost\fR
+The port to connect to\. Default: \fI4443\fR\.
 .
-.fi
+.TP
+\fBuse_tls\fR
+Use TLS when connect to Schleuder API? Default: \fIfalse\fR\.
 .
-.IP "" 0
+.TP
+\fBtls_fingerprint\fR
+TLS\-fingerprint of the Schleuder API\. To be fetched from the API operators\. Default: empty\.
+.
+.TP
+\fBapi_key\fR
+Key to authenticate with against the Schleuder API\. To be fetched from the API operators\. Default: empty\.
 .
 .SH "FILES"
 .
@@ -73,7 +78,7 @@ default path of schleuder\-cli configuration file\.
 The configuration file is formatted as YAML\. See \fIhttp://www\.yaml\.org/\fR for more details\.
 .
 .SH "BUGS"
-Known bugs are listed on the schleuder\-cli bugtracker at \fIhttps://codecoop\.org/schleuder/schleuder\-cli\fR
+Known bugs are listed on the schleuder\-cli bugtracker at \fIhttps://codecoop\.org/schleuder/schleuder\-cli/issues\fR
 .
 .SH "SEE ALSO"
 \fBschleuder\fR(8), \fBschleuder\-api\-daemon\fR(8)\.
