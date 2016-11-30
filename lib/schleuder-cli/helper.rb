@@ -102,6 +102,8 @@ module SchleuderCli
     rescue EOFError => exc
       # TODO: Find a better way to catch this.
       fatal "Error: Trying to connect without TLS but API is served via TLS, check your settings."
+    rescue => exc
+      fatal exc.message
     end
 
     def handle_response_errors(response)
