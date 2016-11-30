@@ -31,20 +31,9 @@ SchleuderCli reads its settings from a file that it by default expects at `$HOME
 
     SCHLEUDER_CLI_CONFIG=/usr/local/etc/schleuder-cli.yml schleuder-cli ...
 
-The configuration file specifies how to connect to the Schleuder API. See below for its default values.
+The configuration file specifies how to connect to the Schleuder API. If it doesn't exist, it will be filled with the default settings.
 
-If you didn't change the defaults in the Schleuder configuration file you don't need a configuration file for SchleuderCli.
-
-### Default values
-
-These are the default configuration settings:
-
-    api:
-      host: localhost
-      port: 4443
-      use_tls: false
-      tls_fingerprint:
-    api_key:
+The default settings will work out of the box with the default settings of Schleuder if both are running on the same host. To connect via a network you have to setup transport encryption as described in the online documentation ([SEE ALSO][]).
 
 
 ## FILES

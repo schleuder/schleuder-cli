@@ -35,9 +35,9 @@ SchleuderCli reads its settings from a file that it by default expects at `$HOME
 
     SCHLEUDER_CLI_CONFIG=/usr/local/etc/schleuder-cli.yml schleuder-cli ...
 
-The configuration file specifies how to connect to the Schleuder API. To see an example have a look at the [defaults file](/etc/schleuder-cli.yml).
+The configuration file specifies how to connect to the Schleuder API. If it doesn't exist, it will be filled with the default settings.
 
-If you didn't change the defaults in the Schleuder configuration file you don't need a configuration file for SchleuderCli.
+The default settings will work out of the box with the default settings of Schleuder if both are running on the same host. To connect via a network you have to setup transport encryption as described in [the online documentation](https://schleuder.nadir.org/docs/).
 
 Usage
 -----
@@ -51,6 +51,7 @@ E.g.:
       schleuder-cli lists ...          # Create and configure lists
       schleuder-cli subscriptions ...  # Create and manage subscriptions
       schleuder-cli version            # Show version of schleuder-cli or Schleuder.
+
 
 
 Contributing
