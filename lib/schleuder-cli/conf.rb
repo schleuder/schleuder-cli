@@ -69,7 +69,7 @@ module SchleuderCli
       end
       # Strip the document starting dashes. We don't need them, they only confuse people.
       yaml = DEFAULTS.to_yaml.lines[1..-1].join
-      file.open('w') do |fh|
+      file.open('w', 0600) do |fh|
         fh.puts yaml
       end
       puts "NOTE: A default configuration file has been written to #{file}."
