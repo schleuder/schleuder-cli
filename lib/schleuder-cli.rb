@@ -19,4 +19,4 @@ require 'schleuder-cli/lists'
 require 'schleuder-cli/keys'
 require 'schleuder-cli/base'
 
-ENV["SCHLEUDER_CLI_CONFIG"] ||= File.join(ENV['HOME'], '.schleuder-cli/schleuder-cli.yml')
+DEFAULT_CONFIG_FILE = File.join(ENV['HOME'], '.schleuder-cli/schleuder-cli.yml')

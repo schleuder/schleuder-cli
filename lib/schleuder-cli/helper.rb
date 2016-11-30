@@ -3,15 +3,15 @@ module SchleuderCli
 
     def api
       @http ||= begin
-          host = Conf.api['host']
-          port = Conf.api['port']
+          host = conf.api['host']
+          port = conf.api['port']
           http = Net::HTTP.new(host, port)
-          if Conf.api_use_tls?
+          if conf.api_use_tls?
             require 'openssl_ssl_patch'
             http.use_ssl = true
             http.verify_mode = OpenSSL::SSL::VERIFY_PEER
             http.verify_callback = lambda { |*a| ssl_verify_callback(*a) }
-            #http.ca_file = Conf.api_cert_file
+            #http.ca_file = conf.api_cert_file
           end
           http
         end
@@ -63,8 +63,8 @@ module SchleuderCli
 
     def request(req, &block)
       test_mandatory_config
-      if Conf.api_use_tls? || Conf.api['host'] == 'localhost'
-        req.basic_auth 'schleuder', Conf.api_key
+      if conf.api_use_tls? || conf.api['host'] == 'localhost'
+        req.basic_auth 'schleuder', conf.api_key
       end
       debug "Request to API: #{req.inspect}"
       debug "API request path: #{req.path.inspect}"
@@ -215,23 +215,27 @@ module SchleuderCli
         return true
       end
       fingerprint = OpenSSL::Digest::SHA256.new(cert.to_der).to_s
-      fingerprint == Conf.api['tls_fingerprint']
+      fingerprint == conf.api['tls_fingerprint']
+    end
+
+    def conf
+      @conf ||= Conf.new(options.configfile || DEFAULT_CONFIG_FILE)
     end
 
     def test_mandatory_config
-      if Conf.api['host'].to_s.empty?
-        fatal "Error: 'host' is empty, can't connect (in #{ENV['SCHLEUDER_CLI_CONFIG']})."
+      if conf.api['host'].to_s.empty?
+        fatal "Error: 'host' is empty, can't connect (in #{conf.filename})."
       end
-      if Conf.api['port'].to_s.empty?
-        fatal "Error: 'port' is empty, can't connect (in #{ENV['SCHLEUDER_CLI_CONFIG']})."
+      if conf.api['port'].to_s.empty?
+        fatal "Error: 'port' is empty, can't connect (in #{conf.filename})."
       end
 
-      if Conf.api_use_tls?
-        if Conf.api['tls_fingerprint'].to_s.empty?
-          fatal "Error: 'tls_fingerprint' is empty but required if 'use_tls' is true (in #{ENV['SCHLEUDER_CLI_CONFIG']})."
+      if conf.api_use_tls?
+        if conf.api['tls_fingerprint'].to_s.empty?
+          fatal "Error: 'tls_fingerprint' is empty but required if 'use_tls' is true (in #{conf.filename})."
         end
-        if Conf.api_key.empty?
-          fatal "Error: 'api_key' is empty but required if 'use_tls' is true (in #{ENV['SCHLEUDER_CLI_CONFIG']})."
+        if conf.api_key.empty?
+          fatal "Error: 'api_key' is empty but required if 'use_tls' is true (in #{conf.filename})."
         end
       end
     end

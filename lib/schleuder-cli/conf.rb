@@ -1,6 +1,6 @@
 module SchleuderCli
   class Conf
-    include Singleton
+    attr_accessor :filename
 
     DEFAULTS = {
         'api' => {
@@ -12,39 +12,31 @@ module SchleuderCli
         'api_key' => nil
       }
 
-    def config
-      @config ||= self.class.load_config('schleuder-cli', ENV['SCHLEUDER_CLI_CONFIG'])
+    def initialize(filename)
+      @config ||= load_config(filename)
+      @filename = filename
     end
 
-    def self.load_config(filename)
-      file = Pathname.new(filename)
-      if file.exist?
-        config = load_config_file(file)
-      else
-        config = write_defaults_to_config_file(file)
-      end
+    def api
+      @config['api'] || {}
     end
 
-    def self.api
-      instance.config['api'] || {}
-    end
-
-    def self.api_use_tls?
+    def api_use_tls?
       api['use_tls'].to_s == "true"
     end
 
-    def self.api_key
-      instance.config['api_key'].to_s
+    def api_key
+      @config['api_key'].to_s
     end
 
-    def self.api_cert_file
+    def api_cert_file
       path = api['remote_cert_file'].to_s
       if path.empty?
-        fatal "Error: remote_cert_file is empty, can't verify remote server without it (in #{ENV['SCHLEUDER_CLI_CONFIG']})."
+        fatal "Error: remote_cert_file is empty, can't verify remote server without it (in #{self.filename})."
       end
       file = Pathname.new(api['remote_cert_file'].to_s).expand_path
       if ! file.readable?
-        fatal "Error: remote_cert_file is set to a not readable file (in #{ENV['SCHLEUDER_CLI_CONFIG']})."
+        fatal "Error: remote_cert_file is set to a not readable file (in #{self.filename})."
       end
       file.to_s
     end
@@ -52,7 +44,16 @@ module SchleuderCli
 
     private
 
-    def self.load_config_file(file)
+    def load_config(filename)
+      file = Pathname.new(filename)
+      if file.exist?
+        load_config_file(file)
+      else
+        write_defaults_to_config_file(file)
+      end
+    end
+
+    def load_config_file(file)
       if ! file.readable?
         fatal "Error: #{file} is not readable."
       end
@@ -60,9 +61,10 @@ module SchleuderCli
       if ! yaml.is_a?(Hash)
         fatal "Error: #{file} cannot be parsed correctly, please fix it. (To get a new default configuration file remove the current one and run again.)"
       end
+      yaml
     end
 
-    def self.write_defaults_to_config_file(file)
+    def write_defaults_to_config_file(file)
       dir = file.dirname
       if ! dir.writable?
         fatal "Error: '#{dir}' is not writable, cannot write default config to '#{file}'."
@@ -76,7 +78,7 @@ module SchleuderCli
       DEFAULTS
     end
 
-    def self.fatal(msg)
+    def fatal(msg)
       $stderr.puts msg
       exit 1
     end

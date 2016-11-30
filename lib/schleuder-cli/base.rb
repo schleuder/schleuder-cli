@@ -2,6 +2,8 @@ module SchleuderCli
   class Base < Thor
     include Helper
 
+    class_option :configfile, aliases: '-c', banner: '<path/to/file>', desc: 'alternative configuration file'
+
     register(Subscriptions,
              'subscriptions',
              'subscriptions ...',
