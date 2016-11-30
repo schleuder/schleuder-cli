@@ -163,10 +163,6 @@ module SchleuderCli
       exit
     end
 
-    def list_options(object)
-      say "Available options:\n\n#{object.class.configurable_attributes.join("\n")}"
-    end
-
     def ok
       say "Ok."
       exit 0
