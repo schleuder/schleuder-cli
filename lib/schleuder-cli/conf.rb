@@ -2,13 +2,27 @@ module SchleuderCli
   class Conf
     include Singleton
 
+    DEFAULTS = {
+        'api' => {
+          'host' => 'localhost',
+          'port' => 4443,
+          'use_tls' => false,
+          'tls_fingerprint' => nil
+          },
+        'api_key' => nil
+      }
+
     def config
       @config ||= self.class.load_config('schleuder-cli', ENV['SCHLEUDER_CLI_CONFIG'])
     end
 
-    def self.load_config(defaults_basename, filename)
-      # TODO: copy default config if not present yet? Makes things more obvious to users.
-      merge_recursively(load_defaults(defaults_basename), load_config_file(filename))
+    def self.load_config(filename)
+      file = Pathname.new(filename)
+      if file.exist?
+        config = load_config_file(file)
+      else
+        config = write_defaults_to_config_file(file)
+      end
     end
 
     def self.api
@@ -38,32 +52,28 @@ module SchleuderCli
 
     private
 
-    # There's no deep_merge in plain ruby, so we bake our own simple version.
-    def self.merge_recursively(a, b)
-      if a.is_a?(Hash) && b.is_a?(Hash)
-        a.merge(b) do |key, a_item, b_item|
-          merge_recursively(a_item, b_item)
-        end
-      else
-        b || a
-      end
-    end
-
-    def self.load_config_file(filename)
-      file = Pathname.new(filename)
-      if file.readable?
-        YAML.load(file.read)
-      else
-        {}
-      end
-    end
-
-    def self.load_defaults(basename)
-      file = Pathname.new(ENV['SCHLEUDER_CLI_ROOT']).join("etc/#{basename}.yml")
+    def self.load_config_file(file)
       if ! file.readable?
-        fatal "Error: '#{file}' is not a readable file."
+        fatal "Error: #{file} is not readable."
       end
-      load_config_file(file)
+      yaml = YAML.load(file.read)
+      if ! yaml.is_a?(Hash)
+        fatal "Error: #{file} cannot be parsed correctly, please fix it. (To get a new default configuration file remove the current one and run again.)"
+      end
+    end
+
+    def self.write_defaults_to_config_file(file)
+      dir = file.dirname
+      if ! dir.writable?
+        fatal "Error: '#{dir}' is not writable, cannot write default config to '#{file}'."
+      end
+      # Strip the document starting dashes. We don't need them, they only confuse people.
+      yaml = DEFAULTS.to_yaml.lines[1..-1].join
+      file.open('w') do |fh|
+        fh.puts yaml
+      end
+      puts "NOTE: A default configuration file has been written to #{file}."
+      DEFAULTS
     end
 
     def self.fatal(msg)
