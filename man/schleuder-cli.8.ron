@@ -15,9 +15,9 @@ schleuder-cli - manage `schleuder`(8)-lists, subscriptions, and keys.
 
 schleuder-cli is a command line tool to create, configure, and delete schleuder-lists, subscriptions, and OpenPGP-keys.
 
-It uses the `schleuder`(8) API, provided by `schleuder-api-daemon`(8), either unencrypted via localhost (default) or TLS-encrypted via the network.
+It uses the `schleuder`(8) API, provided by `schleuder-api-daemon`(8), either unencrypted via localhost (default) or TLS-encrypted remotely.
 
-If TLS is used, authentication and TLS-verification is mandatory. You need the fingerprint of the TLS-certificate of `schleuder-api-daemon`(8) and an API-key. Both should be provided by the administrators of `schleuer-api-daemon`(8).
+If TLS is used, authentication and TLS-verification is mandatory. You need the fingerprint of the TLS-certificate of `schleuder-api-daemon`(8) and an API-key. Both should be provided by the operators of `schleuer-api-daemon`(8).
 
 schleuder-cli does *not* authorize access. Only people who are supposed to have full access to all lists should be allowed to use it on/with your server.
 
@@ -33,7 +33,7 @@ SchleuderCli reads its settings from a file that it by default expects at `$HOME
 
 The configuration file specifies how to connect to the Schleuder API. If it doesn't exist, it will be filled with the default settings.
 
-The default settings will work out of the box with the default settings of Schleuder if both are running on the same host. To connect via a network you have to setup transport encryption as described in the online documentation ([SEE ALSO][]).
+The default settings will work out of the box with the default settings of Schleuder if both are running on the same host.
 
 ### Options
 
@@ -48,7 +48,7 @@ These are the configuration file options and their default values:
  * `tls_fingerprint`:
    TLS-fingerprint of the Schleuder API. To be fetched from the API operators. Default: empty.
  * `api_key`:
-   key to authenticate with against the Schleuder API. To be fetched from the API operators. Default: empty.
+   Key to authenticate with against the Schleuder API. To be fetched from the API operators. Default: empty.
 
 
 ## FILES

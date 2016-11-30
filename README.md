@@ -3,9 +3,12 @@ Schleuder-cli
 
 A command line tool to create and manage schleuder-lists.
 
-Schleuder-cli enables creating, configuring, and deleting lists, subscriptions, keys, etc. It uses the Schleuder API, either unencrypted via localhost (default) or TLS-encrypted via any network.
+Schleuder-cli enables creating, configuring, and deleting lists, subscriptions, keys, etc. It uses the Schleuder API, either unencrypted via localhost (default) or TLS-encrypted remotely.
 
-It does *not* authorize access. Only people who are supposed to have full access to all lists should be allowed to use it on/with your server.
+If TLS is used, authentication and TLS-verification is mandatory. You need the fingerprint of the TLS-certificate of the Schleuder API and an API-key. Both should be provided by the API operators.
+
+schleuder-cli does *not* authorize access. Only people who are supposed to have full access to all lists should be allowed to use it on/with your server.
+
 
 Requirements
 ------------
@@ -37,7 +40,7 @@ SchleuderCli reads its settings from a file that it by default expects at `$HOME
 
 The configuration file specifies how to connect to the Schleuder API. If it doesn't exist, it will be filled with the default settings.
 
-The default settings will work out of the box with the default settings of Schleuder if both are running on the same host. To connect via a network you have to setup transport encryption as described in [the online documentation](https://schleuder.nadir.org/docs/).
+The default settings will work out of the box with the default settings of Schleuder if both are running on the same host.
 
 **Options**
 
