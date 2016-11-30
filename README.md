@@ -39,6 +39,17 @@ The configuration file specifies how to connect to the Schleuder API. If it does
 
 The default settings will work out of the box with the default settings of Schleuder if both are running on the same host. To connect via a network you have to setup transport encryption as described in [the online documentation](https://schleuder.nadir.org/docs/).
 
+**Options**
+
+These are the configuration file options and their default values:
+
+ * `host`: The hostname (or IP-address) to connect to. Default: <localhost>.
+ * `post`: The port to connect to. Default: <4443>.
+ * `use_tls`: Use TLS when connect to Schleuder API? Default: <false>.
+ * `tls_fingerprint`: TLS-fingerprint of the Schleuder API. To be fetched from the API operators. Default: empty.
+ * `api_key`: Key to authenticate with against the Schleuder API. To be fetched from the API operators. Default: empty.
+
+
 Usage
 -----
 See `schleuder-cli help`.
