@@ -13,16 +13,7 @@ module SchleuderCli
       }
 
     def config
-      @config ||= self.class.load_config(ENV['SCHLEUDER_CLI_CONFIG'])
-    end
-
-    def self.load_config(filename)
-      file = Pathname.new(filename)
-      if file.exist?
-        config = load_config_file(file)
-      else
-        config = write_defaults_to_config_file(file)
-      end
+      @config ||= load_config(ENV['SCHLEUDER_CLI_CONFIG'])
     end
 
     def self.api
@@ -52,7 +43,18 @@ module SchleuderCli
 
     private
 
-    def self.load_config_file(file)
+
+    def load_config(filename)
+      file = Pathname.new(filename)
+      if file.exist?
+        load_config_file(file)
+      else
+        write_defaults_to_config_file(file)
+      end
+    end
+
+
+    def load_config_file(file)
       if ! file.readable?
         fatal "Error: #{file} is not readable."
       end
@@ -63,7 +65,7 @@ module SchleuderCli
       yaml
     end
 
-    def self.write_defaults_to_config_file(file)
+    def write_defaults_to_config_file(file)
       dir = file.dirname
       if ! dir.writable?
         fatal "Error: '#{dir}' is not writable, cannot write default config to '#{file}'."
