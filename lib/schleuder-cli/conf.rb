@@ -13,7 +13,7 @@ module SchleuderCli
       }
 
     def config
-      @config ||= self.class.load_config('schleuder-cli', ENV['SCHLEUDER_CLI_CONFIG'])
+      @config ||= self.class.load_config(ENV['SCHLEUDER_CLI_CONFIG'])
     end
 
     def self.load_config(filename)
@@ -60,6 +60,7 @@ module SchleuderCli
       if ! yaml.is_a?(Hash)
         fatal "Error: #{file} cannot be parsed correctly, please fix it. (To get a new default configuration file remove the current one and run again.)"
       end
+      yaml
     end
 
     def self.write_defaults_to_config_file(file)
