@@ -7,7 +7,7 @@ module SchleuderCli
           port = Conf.api['port']
           http = Net::HTTP.new(host, port)
           if Conf.api_use_tls?
-            require 'openssl_ssl_patch'
+            require 'schleuder-cli/openssl_ssl_patch'
             http.use_ssl = true
             http.verify_mode = OpenSSL::SSL::VERIFY_PEER
             http.verify_callback = lambda { |*a| ssl_verify_callback(*a) }
