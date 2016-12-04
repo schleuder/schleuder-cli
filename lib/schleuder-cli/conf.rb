@@ -3,12 +3,10 @@ module SchleuderCli
     include Singleton
 
     DEFAULTS = {
-        'api' => {
-          'host' => 'localhost',
-          'port' => 4443,
-          'use_tls' => false,
-          'tls_fingerprint' => nil
-          },
+        'host' => 'localhost',
+        'port' => 4443,
+        'use_tls' => false,
+        'tls_fingerprint' => nil,
         'api_key' => nil
       }
 
@@ -16,24 +14,32 @@ module SchleuderCli
       @config ||= load_config(ENV['SCHLEUDER_CLI_CONFIG'])
     end
 
-    def self.api
-      instance.config['api'] || {}
+    def self.host
+      instance.config['host'].to_s
     end
 
-    def self.api_use_tls?
-      api['use_tls'].to_s == "true"
+    def self.port
+      instance.config['port'].to_s
+    end
+
+    def self.use_tls?
+      instance.config['use_tls'].to_s == "true"
+    end
+
+    def self.tls_fingerprint
+      instance.config['tls_fingerprint'].to_s
     end
 
     def self.api_key
       instance.config['api_key'].to_s
     end
 
-    def self.api_cert_file
-      path = api['remote_cert_file'].to_s
+    def self.remote_cert_file
+      path = instance.config['remote_cert_file'].to_s
       if path.empty?
         fatal "Error: remote_cert_file is empty, can't verify remote server without it (in #{ENV['SCHLEUDER_CLI_CONFIG']})."
       end
-      file = Pathname.new(api['remote_cert_file'].to_s).expand_path
+      file = Pathname.new(path).expand_path
       if ! file.readable?
         fatal "Error: remote_cert_file is set to a not readable file (in #{ENV['SCHLEUDER_CLI_CONFIG']})."
       end
@@ -62,6 +68,10 @@ module SchleuderCli
       if ! yaml.is_a?(Hash)
         fatal "Error: #{file} cannot be parsed correctly, please fix it. (To get a new default configuration file remove the current one and run again.)"
       end
+      # Test for old, nested config
+      if ! yaml['api'].nil?
+        self.class.fatal "Your configuration file is outdated, please fix it: Remove the first level key called 'api', and move the keys below it to the first level. It should look like this (possibly with different values):\n\n#{defaults_as_yaml}"
+      end
       yaml
     end
 
@@ -71,9 +81,8 @@ module SchleuderCli
         fatal "Error: '#{dir}' is not writable, cannot write default config to '#{file}'."
       end
       # Strip the document starting dashes. We don't need them, they only confuse people.
-      yaml = DEFAULTS.to_yaml.lines[1..-1].join
       file.open('w', 0600) do |fh|
-        fh.puts yaml
+        fh.puts defaults_as_yaml
       end
       puts "NOTE: A default configuration file has been written to #{file}."
       DEFAULTS
@@ -88,5 +97,8 @@ module SchleuderCli
       exit 1
     end
 
+    def defaults_as_yaml
+      DEFAULTS.to_yaml.lines[1..-1].join
+    end
   end
 end
