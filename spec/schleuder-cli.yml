@@ -1,0 +1,5 @@
+host: localhost
+port: 4444
+use_tls: false
+tls_fingerprint: 
+api_key: 

@@ -27,6 +27,7 @@ RSpec.configure do |config|
 end
 
 def run_cli(args=[])
+  ENV['SCHLEUDER_CLI_CONFIG'] = 'spec/schleuder-cli.yml'
   output = ''
   $stdout = StringIO.new(output)
   SchleuderCli::Base.start(Array(args))
