@@ -46,6 +46,10 @@ class SchleuderApiDaemon < Sinatra::Base
   end
 
   helpers do
+    def load_fixture(klass, id)
+      File.read(File.join(File.dirname(__FILE__), 'fixtures', klass, id, '.json'))
+    end
+
     def list(id_or_email=nil)
       if id_or_email.blank?
         if params[:list_id].present?
@@ -56,9 +60,9 @@ class SchleuderApiDaemon < Sinatra::Base
       end
       if id_or_email.to_i == 0
         # list_id is actually an email address
-        list = List.where(email: id_or_email).first
+        list = load_fixture(:list, id_or_email)
       else
-        list = List.where(id: id_or_email).first
+        list = load_fixture(:list, id_or_email)
       end
       list || halt(404)
     end
