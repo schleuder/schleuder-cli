@@ -80,7 +80,6 @@ module SchleuderCli
       if ! dir.writable?
         fatal "Error: '#{dir}' is not writable, cannot write default config to '#{file}'."
       end
-      # Strip the document starting dashes. We don't need them, they only confuse people.
       file.open('w', 0600) do |fh|
         fh.puts defaults_as_yaml
       end
@@ -98,6 +97,7 @@ module SchleuderCli
     end
 
     def defaults_as_yaml
+      # Strip the document starting dashes. We don't need them, they only confuse people.
       DEFAULTS.to_yaml.lines[1..-1].join
     end
   end
