@@ -77,7 +77,9 @@ module SchleuderCli
 
     def write_defaults_to_config_file(file)
       dir = file.dirname
-      if ! dir.writable?
+      if dir.dirname.writable?
+        dir.mkdir(0700)
+      else
         fatal "Error: '#{dir}' is not writable, cannot write default config to '#{file}'."
       end
       file.open('w', 0600) do |fh|
