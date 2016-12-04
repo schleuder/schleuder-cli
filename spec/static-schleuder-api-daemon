@@ -1,0 +1,324 @@
+#!/usr/bin/env ruby
+
+# Make sinatra use production as default-environment
+ENV['RACK_ENV'] ||= 'production'
+
+require 'sinatra/base'
+require 'sinatra/json'
+require 'sinatra/namespace'
+require 'thin'
+
+
+class SchleuderApiDaemon < Sinatra::Base
+  register Sinatra::Namespace
+  configure do
+    set :server, :thin
+    set :port, 4444
+    set :bind, 'localhost'
+    set :logging, false
+  end
+
+  before do
+    cast_param_values
+  end
+
+  error do
+    exc = env['sinatra.error']
+    logger.error "Error: #{env['sinatra.error'].message}"
+    case exc
+    when Errno::EACCES
+      server_error(exc.message)
+    else
+      client_error(exc.to_s)
+    end
+  end
+
+  error 404 do
+    'Not found'
+  end
+
+  get '/status.json' do
+    json status: :ok
+  end
+
+  get '/version.json' do
+    json version: '999.99.9'
+  end
+
+  helpers do
+    def list(id_or_email=nil)
+      if id_or_email.blank?
+        if params[:list_id].present?
+          id_or_email = params[:list_id]
+        else
+          client_error "Parameter list_id is required"
+        end
+      end
+      if id_or_email.to_i == 0
+        # list_id is actually an email address
+        list = List.where(email: id_or_email).first
+      else
+        list = List.where(id: id_or_email).first
+      end
+      list || halt(404)
+    end
+
+    def subscription(id_or_email)
+      if id_or_email.to_i == 0
+        # Email
+        if params[:list_id].blank?
+          client_error "Parameter list_id is required when using email as identifier for subscriptions."
+        else
+          sub = list.subscriptions.where(email: id_or_email).first
+        end
+      else
+        sub = Subscription.where(id: id_or_email.to_i).first
+      end
+      sub || halt(404)
+    end
+
+    def requested_list_id
+      # ActiveResource doesn't want to use query-params with create(), so here
+      # list_id might be included in the request-body.
+      params['list_id'] || parsed_body['list_id'] || client_error('Need list_id')
+    end
+
+    def parsed_body
+      @parsed_body ||= begin
+          b = JSON.parse(request.body.read)
+          logger.debug "parsed body: #{b.inspect}"
+          b
+        end
+    end
+
+    def server_error(msg)
+      logger.warn msg
+      halt(500, json(error: msg))
+    end
+
+    # TODO: unify error messages. This method currently sends an old error format. See <https://github.com/rails/activeresource/blob/d6a5186/lib/active_resource/base.rb#L227>.
+    def client_error(obj_or_msg, http_code=400)
+      text = case obj_or_msg
+             when String, Symbol
+               obj_or_msg.to_s
+             when Array
+               obj_or_msg.join("\n")
+             when ActiveRecord::Base
+               obj_or_msg.errors.full_messages
+             else
+               obj_or_msg
+             end
+      logger.error "Sending error to client: #{text.inspect}"
+      halt(http_code, json(errors: text))
+    end
+
+    # poor persons type casting
+    def cast_param_values
+      params.each do |key, value|
+        params[key] =
+            case value
+            when 'true' then true
+            when 'false' then false
+            when '0' then 0
+            when value.to_i > 0 then value.to_i
+            else value
+            end
+      end
+    end
+
+    def key_to_json(key)
+      {
+        fingerprint: key.fingerprint,
+        email: key.email,
+        ascii: key.armored,
+        expiry: key.expires,
+        trust_issues: key.trust
+      }
+    end
+  end
+
+  namespace '/lists' do
+    get '.json' do
+      [{"id":30,"created_at":"2015-08-22T19:55:56.627Z","updated_at":"2016-11-23T21:35:27.990Z","email":"something@localhost","fingerprint":"FE1671DA071B08023A260CC2D2915EC47415257A","log_level":"debug","subject_prefix":"[something]","subject_prefix_in":"[in]","subject_prefix_out":"[out]","openpgp_header_preference":"signencrypt","public_footer":"","headers_to_meta":["from","to"],"bounces_drop_on_headers":{"x-spam-flag":"yes","x-foo":"bar"},"keywords_admin_only":["subscribe","unsubscribe","list-keys"],"keywords_admin_notify":["add-key"],"send_encrypted_only":true,"receive_encrypted_only":false,"receive_signed_only":false,"receive_authenticated_only":false,"receive_from_subscribed_emailaddresses_only":false,"receive_admin_only":false,"keep_msgid":true,"bounces_drop_all":false,"bounces_notify_admins":true,"include_list_headers":true,"include_openpgp_header":true,"max_message_size_kb":10240,"language":"de","logfiles_to_keep":3,"forward_all_incoming_to_admins":false,"subscriptions":[{"id":123,"list_id":30,"email":"benito@zeromail.org","fingerprint":"eeeeeeffffff","admin":false,"delivery_enabled":true,"created_at":"2016-10-26T10:26:00.830Z","updated_at":"2016-11-23T11:35:32.290Z"},{"id":106,"list_id":30,"email":"paz@nadir.org","fingerprint":"52507B0163A8D9F0094FFE03B1A36F08069E55DE","admin":true,"delivery_enabled":true,"created_at":"2016-05-04T09:26:03.723Z","updated_at":"2016-05-18T13:39:13.153Z"}]},{"id":131,"created_at":"2016-11-23T22:10:43.255Z","updated_at":"2016-11-23T22:10:43.255Z","email":"test15836@localhost","fingerprint":"E9B8923E0602CDCE337C685C3E184E6318ABC3B3","log_level":"warn","subject_prefix":null,"subject_prefix_in":null,"subject_prefix_out":null,"openpgp_header_preference":"signencrypt","public_footer":null,"headers_to_meta":["from","to","cc","date"],"bounces_drop_on_headers":{"x-spam-flag":true},"keywords_admin_only":["subscribe","unsubscribe","delete-key"],"keywords_admin_notify":["add-key"],"send_encrypted_only":true,"receive_encrypted_only":false,"receive_signed_only":false,"receive_authenticated_only":false,"receive_from_subscribed_emailaddresses_only":false,"receive_admin_only":false,"keep_msgid":true,"bounces_drop_all":false,"bounces_notify_admins":true,"include_list_headers":true,"include_openpgp_header":true,"max_message_size_kb":10240,"language":"en","logfiles_to_keep":2,"forward_all_incoming_to_admins":false,"subscriptions":[{"id":124,"list_id":131,"email":"paz@nadir.org","fingerprint":"52507B0163A8D9F0094FFE03B1A36F08069E55DE","admin":true,"delivery_enabled":true,"created_at":"2016-11-23T22:10:43.346Z","updated_at":"2016-11-23T22:10:43.346Z"}]}]
+    end
+
+    post '.json' do
+      listname = parsed_body['email']
+      adminaddress = parsed_body['adminaddress']
+      adminkey = parsed_body['adminkey']
+      list, messages = ListBuilder.new({email: listname}, adminaddress, adminkey).run
+      if list.nil?
+        client_error(messages, 422)
+      elsif ! list.valid?
+        client_error(list, 422)
+      else
+        if messages.present?
+          headers 'X-Messages' => messages.join(' // ').gsub(/\n/, ' // ')
+        end
+        body json(list)
+      end
+    end
+
+    get '/configurable_attributes.json' do
+      json(List.configurable_attributes) + "\n"
+    end
+
+    get '/new.json' do
+      json List.new
+    end
+
+    get '/:id.json' do |id|
+      json list(id)
+    end
+
+    put '/:id.json' do |id|
+      list = list(id)
+      if list.update(parsed_body)
+        204
+      else
+        client_error(list)
+      end
+    end
+
+    patch '/:id.json' do |id|
+      list = list(id)
+      if list.update(parsed_body)
+        204
+      else
+        client_error(list)
+      end
+    end
+
+    delete '/:id.json' do |id|
+      list = list(id)
+      if list.destroy
+        200
+      else
+        client_error(list)
+      end
+    end
+  end
+
+  namespace '/subscriptions' do
+    get '.json' do
+      filterkeys = Subscription.configurable_attributes + [:list_id, :email]
+      filter = params.select do |param|
+        filterkeys.include?(param.to_sym)
+      end
+
+      logger.debug "Subscription filter: #{filter.inspect}"
+      if filter['list_id'] && filter['list_id'].to_i == 0
+        # Value is an email-address
+        if list = List.where(email: filter['list_id']).first
+          filter['list_id'] = list.id
+        else
+          status 404
+          return json(errors: 'No such list')
+        end
+      end
+
+      json Subscription.where(filter)
+    end
+
+    post '.json' do
+      begin
+        list = list(requested_list_id)
+        sub = list.subscribe(
+            parsed_body['email'],
+            parsed_body['fingerprint'],
+            parsed_body['admin'],
+            parsed_body['delivery_enabled']
+          )
+        logger.debug "subcription: #{sub.inspect}"
+        if sub.valid?
+          logger.debug "Subscribed: #{sub.inspect}"
+          redirect to("/subscriptions/#{sub.id}.json"), 201
+        else
+          client_error(sub, 422)
+        end
+      rescue ActiveRecord::RecordNotUnique
+        logger.error "Already subscribed"
+        status 422
+        json errors: {email: ['is already subscribed']}
+      end
+    end
+
+    get '/configurable_attributes.json' do
+      json(Subscription.configurable_attributes) + "\n"
+    end
+
+    get '/new.json' do
+      json Subscription.new
+    end
+
+    get '/:id.json' do |id|
+      json subscription(id)
+    end
+
+    put '/:id.json' do |id|
+      sub = subscription(id)
+      if sub.update(parsed_body)
+        200
+      else
+        client_error(sub, 422)
+      end
+    end
+
+    patch '/:id.json' do |id|
+      sub = subscription(id)
+      if sub.update(parsed_body)
+        200
+      else
+        client_error(sub)
+      end
+    end
+
+    delete '/:id.json' do |id|
+      if sub = subscription(id).destroy
+        200
+      else
+        client_error(sub)
+      end
+    end
+  end
+
+  namespace '/keys' do
+    get '.json' do
+      keys = list.keys.sort_by(&:email).map do |key|
+        key_to_json(key)
+      end
+      json keys
+    end
+
+    post '.json' do
+      input = parsed_body['keymaterial']
+      if ! input.match('BEGIN PGP')
+        input = Base64.decode64(input)
+      end
+      json list(requested_list_id).import_key(input)
+    end
+
+    get '/:fingerprint.json' do |fingerprint|
+      if key = list.key(fingerprint)
+        json key_to_json(key)
+      else
+        404
+      end
+    end
+
+    delete '/:fingerprint.json' do |fingerprint|
+      if list.delete_key(fingerprint)
+        200
+      else
+        404
+      end
+    end
+
+    get '/check_keys.json' do
+      json result: list.check_keys
+    end
+  end
+
+  # Run this class as application
+  run!
+end

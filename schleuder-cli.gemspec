@@ -23,4 +23,7 @@ Gem::Specification.new do |s|
   s.license = 'GPL-3.0'
   s.add_runtime_dependency 'thor', '~> 0'
   s.add_development_dependency 'rspec', '~> 3.5.0'
+  s.add_development_dependency 'thin', '~> 1'
+  s.add_runtime_dependency 'sinatra', '~> 1'
+  s.add_runtime_dependency 'sinatra-contrib', '~> 1'
 end

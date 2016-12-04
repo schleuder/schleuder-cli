@@ -26,6 +26,19 @@ RSpec.configure do |config|
   end
 end
 
+def start_api_daemon
+  if ! @api_daemon_pid
+    @api_daemon_pid = Process.spawn 'spec/static-schleuder-api-daemon', {'redirection' => { :out => '/dev/null' }}
+    sleep 2
+  end
+end
+
+def stop_api_daemon
+  if @api_daemon_pid
+    Process.kill(15, @api_daemon_pid)
+  end
+end
+
 def run_cli(args=[])
   ENV['SCHLEUDER_CLI_CONFIG'] = 'spec/schleuder-cli.yml'
   output = ''

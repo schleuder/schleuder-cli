@@ -2,6 +2,14 @@ require "spec_helper"
 
 describe SchleuderCli do
 
+  before do
+    start_api_daemon
+  end
+
+  after do
+    stop_api_daemon
+  end
+
   it "returns a help message when run without argument" do
     output = run_cli
     expect(output).to include(" help [COMMAND]")
