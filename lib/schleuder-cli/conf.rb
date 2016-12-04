@@ -79,6 +79,10 @@ module SchleuderCli
       DEFAULTS
     end
 
+    def fatal(msg)
+      self.class.fatal(msg)
+    end
+
     def self.fatal(msg)
       $stderr.puts msg
       exit 1
