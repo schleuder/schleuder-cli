@@ -26,6 +26,10 @@ RSpec.configure do |config|
   end
 end
 
-def run_cli(args='')
-  `bin/schleuder-cli #{args}`
+def run_cli(args=[])
+  output = ''
+  $stdout = StringIO.new(output)
+  SchleuderCli::Base.start(Array(args))
+  $stdout = STDOUT
+  return output.chomp
 end
