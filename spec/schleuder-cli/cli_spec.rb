@@ -35,4 +35,13 @@ describe SchleuderCli do
     expect(output).to eq(SchleuderCli::VERSION)
   end
 
+  it "shows remote version" do
+    output = run_cli(%w[version -r])
+    expect(output).to eq('999.99.9')
+  end
+
+  it "lists all lists" do
+    output = run_cli(%w[lists list])
+    expect(output).to eq("something@localhost\ntest15836@localhost bl")
+  end
 end
