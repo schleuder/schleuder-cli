@@ -5,7 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 The format of this file is based on [Keep a Changelog](http://keepachangelog.com/).
 
-## 0.0.1.beta13
+## [Unreleased]
 
 ### Changed
 
@@ -17,7 +17,8 @@ The format of this file is based on [Keep a Changelog](http://keepachangelog.com
 
  * Write default config if none exists yet, let only user+group access it.
 
-## [Unreleased]
+
+## [before]
 
 ### Added
 
