@@ -6,7 +6,7 @@ require 'schleuder-cli/version'
 Gem::Specification.new do |s|
   s.name         = "schleuder-cli"
   s.version      = SchleuderCli::VERSION
-  s.authors      = %w(paz)
+  s.authors      = 'schleuder dev team'
   s.email        = "schleuder@nadir.org"
   s.homepage     = "https://schleuder.nadir.org/"
   s.summary      = "A command line tool to configure schleuder-lists."
