@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.summary      = "A command line tool to configure schleuder-lists."
   s.description  = "Schleuder-cli enables creating, configuring, and deleting schleuder-lists, subscriptions, keys, etc."
   s.files        = `git ls-files etc lib README.md`.split
-  s.executables =  `git ls-files bin`.split.map {|file| File.basename(file) }
+  s.executables  = `git ls-files bin`.split.map {|file| File.basename(file) }
   s.platform     = Gem::Platform::RUBY
   s.require_path = 'lib'
   s.rubyforge_project = '[none]'
