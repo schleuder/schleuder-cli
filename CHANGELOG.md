@@ -5,11 +5,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 The format of this file is based on [Keep a Changelog](http://keepachangelog.com/).
 
-## [Unreleased]
+## 0.0.1.beta13
 
 ### Changed
 
  * Flat config file, no nested keys anymore.
+ * Fix tarball to contain correct data.
+ * Create basedir of config if necessary.
 
 ## 0.0.1.beta12
 
