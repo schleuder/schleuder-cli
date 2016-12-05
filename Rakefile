@@ -5,6 +5,15 @@ require_relative "lib/#{project}.rb"
 @tagname = "#{project}-#{@version}"
 @gpguid = 'schleuder@nadir.org'
 
+def edit_and_add_file(filename)
+  puts "Please edit #{filename} to refer to version #{@version}"
+  if system("gvim -f #{filename}.md")
+    `git add #{filename}.md`
+  else
+    exit 1
+  end
+end
+
 def move_sign_and_add(file)
   `mv -iv #{file} gems/`
   `cd gems && gpg -u #{@gpguid} -b #{file}`
@@ -15,17 +24,30 @@ task :publish_gem => :website
 task :git_tag => :check_version
 
 desc "Build new version: git-tag and gem-file"
-task :new_version => [:check_version, :gem, :tarball, :edit_readme, :git_commit_version, :git_tag] do
+task :new_version => [
+    :check_version,
+    :edit_readme, :edit_changelog,
+    :git_add_version, :update_gemfile_lock,
+    :git_commit,
+    :gem, :tarball, :git_amend_gems,
+    :git_tag
+  ] do
+end
+
+desc "Edit CHANGELOG.md"
+task :edit_changelog do
+  edit_and_add_file('CHANGELOG')
 end
 
 desc "Edit README"
 task :edit_readme do
-  puts "Please edit the README to refer to version #{@version}"
-  if system('gvim -f README.md')
-    `git add README.md`
-  else
-    exit 1
-  end
+  edit_and_add_file('README')
+end
+
+desc "Make sure the Gemfile.lock is up to date and added to the index"
+task :update_gemfile_lock do
+  `bundle install`
+  `git add Gemfile.lock`
 end
 
 desc 'git-tag HEAD as new version'
@@ -33,10 +55,19 @@ task :git_tag do
   `git tag -u #{@gpguid} -s -m "Version #{@version}" #{@tagname}`
 end
 
-desc "Commit changes as new version"
-task :git_commit_version do
+desc "Add changed version to git-index"
+task :git_add_version do
   `git add lib/#{project}/version.rb`
-  `git commit -m "Version #{@version} (README, gems)"`
+end
+
+desc "Commit changes as new version"
+task :git_commit do
+  `git commit -m "Version #{@version} (README, gems, ...)"`
+end
+
+desc "git-amend gem, tarball and signatures to previous commit"
+task :git_amend_gems do
+  `git add gems && git commit --amend -C HEAD`
 end
 
 desc 'Build, sign and commit a gem-file.'
