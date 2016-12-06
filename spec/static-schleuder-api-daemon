@@ -175,7 +175,7 @@ class SchleuderApiDaemon < Sinatra::Base
     end
 
     get '/:id.json' do |id|
-      json list(id)
+      load_fixture("list-#{id}")
     end
 
     put '/:id.json' do |id|
