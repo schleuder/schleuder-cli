@@ -34,6 +34,6 @@ describe SchleuderCli do
 
   it "lists all lists" do
     output = run_cli(%w[lists list])
-    expect(output).to eq("something@localhost\ntest15836@localhost bl")
+    expect(output).to eq("something@localhost\ntest15836@localhost")
   end
 end
