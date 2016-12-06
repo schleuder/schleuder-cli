@@ -2,6 +2,8 @@ require 'bundler/setup'
 Bundler.setup
 require 'schleuder-cli'
 
+ENV['SCHLEUDER_CLI_CONFIG'] = 'spec/schleuder-cli.yml'
+
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
     # This option will default to `true` in RSpec 4. It makes the `description`
@@ -49,7 +51,6 @@ def stop_api_daemon
 end
 
 def run_cli(args=[])
-  ENV['SCHLEUDER_CLI_CONFIG'] = 'spec/schleuder-cli.yml'
   output = ''
   $stdout = StringIO.new(output)
   SchleuderCli::Base.start(Array(args))
