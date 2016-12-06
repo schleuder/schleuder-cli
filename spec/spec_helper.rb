@@ -28,7 +28,7 @@ end
 
 def start_api_daemon
   if ! @api_daemon_pid
-    @api_daemon_pid = Process.spawn 'spec/static-schleuder-api-daemon', {'redirection' => { :out => '/dev/null' }}
+    @api_daemon_pid = Process.spawn('spec/static-schleuder-api-daemon', { :out => '/dev/null', :err => '/dev/null' })
     sleep 2
   end
 end
