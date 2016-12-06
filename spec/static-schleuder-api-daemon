@@ -49,6 +49,8 @@ class SchleuderApiDaemon < Sinatra::Base
     def load_fixture(filename)
       filename << '.json'
       File.read(File.join(File.dirname(__FILE__), 'fixtures', filename))
+    rescue Errno::ENOENT
+      halt(404)
     end
 
     def list(id_or_email=nil)
