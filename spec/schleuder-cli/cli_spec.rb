@@ -37,9 +37,28 @@ describe SchleuderCli do
     expect(output).to eq("something@localhost\ntest15836@localhost")
   end
 
+  # A string value.
   it "shows log_level for existing list" do
     output = run_cli(%w[lists show something@localhost log_level])
     expect(output).to eq("debug")
+  end
+
+  # An array-value.
+  it "shows keywords_admin_only for existing list" do
+    output = run_cli(%w[lists show something@localhost keywords_admin_only])
+    expect(output).to eq('["subscribe", "unsubscribe", "list-keys"]')
+  end
+
+  # A hash-value.
+  it "shows bounces_drop_on_headers for existing list" do
+    output = run_cli(%w[lists show something@localhost bounces_drop_on_headers])
+    expect(output).to eq('{"x-spam-flag"=>"yes", "x-foo"=>"bar"}')
+  end
+
+  # A non-existing option
+  it "shows error message for non-existing option for existing list" do
+    output = run_cli(%w[lists show something@localhost foobar])
+    expect(output).to eq('No such option')
   end
 
   it "lists keys for existing list" do
