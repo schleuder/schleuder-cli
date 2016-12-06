@@ -51,9 +51,7 @@ def stop_api_daemon
 end
 
 def run_cli(args=[])
-  output = ''
-  $stdout = StringIO.new(output)
-  SchleuderCli::Base.start(Array(args))
-  $stdout = STDOUT
-  return output.chomp
+  cli = File.expand_path("#{__FILE__}/../../bin/schleuder-cli")
+  args = Array(args).join(' ')
+  return `#{cli} #{args}`.chomp
 end
