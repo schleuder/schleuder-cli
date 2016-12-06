@@ -53,5 +53,5 @@ end
 def run_cli(args=[])
   cli = File.expand_path("#{__FILE__}/../../bin/schleuder-cli")
   args = Array(args).join(' ')
-  return `#{cli} #{args}`.chomp
+  return `#{cli} #{args} 2>&1`.chomp
 end
