@@ -24,6 +24,15 @@ RSpec.configure do |config|
     # `true` in RSpec 4.
     mocks.verify_partial_doubles = true
   end
+
+  config.before(:suite) do
+    start_api_daemon
+  end
+
+  config.after(:suite) do
+    stop_api_daemon
+  end
+
 end
 
 def start_api_daemon
