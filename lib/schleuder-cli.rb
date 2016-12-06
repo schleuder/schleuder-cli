@@ -5,6 +5,7 @@ require 'net/https'
 require 'uri'
 require 'singleton'
 require 'yaml'
+require 'base64'
 
 rootdir = Pathname.new(__FILE__).dirname.dirname.realpath
 $:.unshift File.join(rootdir, 'lib')

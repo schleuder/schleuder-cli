@@ -170,7 +170,7 @@ module SchleuderCli
 
     def import_key(listname, keyfile)
       test_file(keyfile)
-      keydata = File.read(keyfile)
+      keydata = File.binread(keyfile)
       if ! keydata.match('BEGIN PGP')
         keydata = Base64.encode64(keydata)
       end
