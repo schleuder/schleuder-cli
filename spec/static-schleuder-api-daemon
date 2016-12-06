@@ -289,10 +289,7 @@ class SchleuderApiDaemon < Sinatra::Base
 
   namespace '/keys' do
     get '.json' do
-      keys = list.keys.sort_by(&:email).map do |key|
-        key_to_json(key)
-      end
-      json keys
+      load_fixture("keys-#{params[:list_id]}")
     end
 
     post '.json' do

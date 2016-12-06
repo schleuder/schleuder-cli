@@ -36,4 +36,9 @@ describe SchleuderCli do
     output = run_cli(%w[lists list])
     expect(output).to eq("something@localhost\ntest15836@localhost")
   end
+
+  it "lists keys for existing list" do
+    output = run_cli(%w[keys list something@localhost])
+    expect(output).to eq("52507B0163A8D9F0094FFE03B1A36F08069E55DE paz@nadir.org\nFE1671DA071B08023A260CC2D2915EC47415257A something-request@localhost")
+  end
 end
