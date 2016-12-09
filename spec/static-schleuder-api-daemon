@@ -167,7 +167,7 @@ class SchleuderApiDaemon < Sinatra::Base
     end
 
     get '/configurable_attributes.json' do
-      json(List.configurable_attributes) + "\n"
+      load_fixture('lists-configurable_attributes')
     end
 
     get '/new.json' do
