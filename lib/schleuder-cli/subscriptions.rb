@@ -10,7 +10,8 @@ module SchleuderCli
         email = subscription['email']
         fingerprint = subscription['fingerprint'].empty? ? 'N/A' : subscription['fingerprint']
         admin = subscription['admin'] ? 'admin' : ''
-        say "#{email}\t#{fingerprint}\t#{admin}\n"
+        delivery_enabled = subscription['delivery_enabled'] ? '' : 'Delivery disabled!'
+        say "#{email}\t#{fingerprint}\t#{admin}\t#{delivery_enabled}\n"
       end
       say "\n"
     end
