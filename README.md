@@ -46,9 +46,9 @@ The default settings will work out of the box with the default settings of Schle
 
 These are the configuration file options and their default values:
 
- * `host`: The hostname (or IP-address) to connect to. Default: <localhost>.
- * `post`: The port to connect to. Default: <4443>.
- * `use_tls`: Use TLS when connect to Schleuder API? Default: <false>.
+ * `host`: The hostname (or IP-address) to connect to. Default: `localhost`.
+ * `post`: The port to connect to. Default: `4443`.
+ * `use_tls`: Use TLS when connect to Schleuder API? Default: `false`.
  * `tls_fingerprint`: TLS-fingerprint of the Schleuder API. To be fetched from the API operators. Default: empty.
  * `api_key`: Key to authenticate with against the Schleuder API. To be fetched from the API operators. Default: empty.
 
