@@ -62,7 +62,7 @@ The configuration file is formatted as YAML. See
 ## BUGS
 
 Known bugs are listed on the schleuder-cli bugtracker at
-<https://codecoop.org/schleuder/schleuder-cli/issues>
+<https://0xacab.org/schleuder/schleuder-cli/issues>
 
 ## SEE ALSO
 
@@ -70,7 +70,7 @@ Known bugs are listed on the schleuder-cli bugtracker at
 `schleuder-api-daemon`(8).
 
  * Website of `schleuder-cli`:
-   <https://codecoop.org/schleuder/schleuder-cli/>
+   <https://0xacab.org/schleuder/schleuder-cli/>
 
  * Website of `schleuder`:
    <https://schleuder.nadir.org/>
@@ -79,4 +79,4 @@ Known bugs are listed on the schleuder-cli bugtracker at
    <https://schleuder.nadir.org/docs/>
 
  * `schleuder-web`, the web interface for list-management:
-   <https://codecoop.org/schleuder/schleuder-web/>
+   <https://0xacab.org/schleuder/schleuder-web/>
