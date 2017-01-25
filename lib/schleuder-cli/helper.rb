@@ -4,13 +4,10 @@ module SchleuderCli
     def api
       @http ||= begin
           http = Net::HTTP.new(Conf.host, Conf.port)
-          if Conf.use_tls?
-            require 'schleuder-cli/openssl_ssl_patch'
-            http.use_ssl = true
-            http.verify_mode = OpenSSL::SSL::VERIFY_PEER
-            http.verify_callback = lambda { |*a| ssl_verify_callback(*a) }
-            #http.ca_file = Conf.remote_cert_file
-          end
+          http.use_ssl = true
+          http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+          http.verify_callback = lambda { |*a| ssl_verify_callback(*a) }
+          #http.ca_file = Conf.remote_cert_file
           http
         end
     end
@@ -90,14 +87,9 @@ module SchleuderCli
       case exc.message
       when /certificate verify failed/
         fatal exc.message.split('state=').last.capitalize
-      when /read server hello A: unknown protocol/
-        fatal "Error: Trying to connect via TLS but API is not served via TLS, check your settings."
       else
         fatal exc.message
       end
-    rescue EOFError => exc
-      # TODO: Find a better way to catch this.
-      fatal "Error: Trying to connect without TLS but API is served via TLS, check your settings."
     rescue => exc
       fatal exc.message
     end
@@ -221,8 +213,8 @@ module SchleuderCli
       if Conf.port.empty?
         fatal "Error: 'port' is empty, can't connect (in #{ENV['SCHLEUDER_CLI_CONFIG']})."
       end
-      if Conf.use_tls? && Conf.tls_fingerprint.empty?
-        fatal "Error: 'tls_fingerprint' is empty but required if 'use_tls' is true (in #{ENV['SCHLEUDER_CLI_CONFIG']})."
+      if Conf.tls_fingerprint.empty?
+        fatal "Error: 'tls_fingerprint' is empty but required (in #{ENV['SCHLEUDER_CLI_CONFIG']})."
       end
       if Conf.api_key.empty?
         fatal "Error: 'api_key' is empty but required (in #{ENV['SCHLEUDER_CLI_CONFIG']})."

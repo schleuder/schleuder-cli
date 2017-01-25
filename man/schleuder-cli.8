@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "SCHLEUDER\-CLI" "1" "January 2017" "" ""
+.TH "SCHLEUDER\-CLI" "8" "January 2017" "" ""
 .
 .SH "NAME"
 schleuder\-cli \- manage \fBschleuder\fR(8)\-lists, subscriptions, and keys\.
@@ -16,10 +16,10 @@ schleuder\-cli \- manage \fBschleuder\fR(8)\-lists, subscriptions, and keys\.
 schleuder\-cli is a command line tool to create, configure, and delete schleuder\-lists, subscriptions, and OpenPGP\-keys\.
 .
 .P
-It uses the \fBschleuder\fR(8) API, provided by \fBschleuder\-api\-daemon\fR(8), either unencrypted via localhost (default) or TLS\-encrypted remotely\.
+It uses the \fBschleuder\fR(8) API, provided by \fBschleuder\-api\-daemon\fR(8)\.
 .
 .P
-If TLS is used, authentication and TLS\-verification is mandatory\. You need the fingerprint of the TLS\-certificate of \fBschleuder\-api\-daemon\fR(8) and an API\-key\. Both should be provided by the operators of \fBschleuer\-api\-daemon\fR(8)\.
+Authentication and TLS\-verification are mandatory\. You need an API\-key and the fingerprint of the TLS\-certificate of \fBschleuer\-api\-daemon\fR(8), respectively\. Both should be provided by the operators of \fBschleuer\-api\-daemon\fR(8)\.
 .
 .P
 schleuder\-cli does \fInot\fR authorize access\. Only people who are supposed to have full access to all lists should be allowed to use it on/with your server\.
@@ -55,10 +55,6 @@ The hostname (or IP\-address) to connect to\. Default: \fIlocalhost\fR\.
 .TP
 \fBpost\fR
 The port to connect to\. Default: \fI4443\fR\.
-.
-.TP
-\fBuse_tls\fR
-Use TLS when connect to Schleuder API? Default: \fIfalse\fR\.
 .
 .TP
 \fBtls_fingerprint\fR

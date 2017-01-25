@@ -3,11 +3,9 @@ Schleuder-cli
 
 A command line tool to create and manage schleuder-lists.
 
-Schleuder-cli enables creating, configuring, and deleting lists, subscriptions, keys, etc. It uses the Schleuder API, either unencrypted via localhost (default) or TLS-encrypted remotely.
+Schleuder-cli enables creating, configuring, and deleting lists, subscriptions, keys, etc. It uses the Schleuder API, provided by schleuder-api-daemon (part of Schleuder).
 
-Authentication with an API-key is mandatory. It should be provided by the API operators.
-
-If TLS is used, TLS-verification is also mandatory. You need the fingerprint of the TLS-certificate of the Schleuder API, which should also be provided by the API operators.
+Authentication and TLS-verification are mandatory. You need an API-key and the fingerprint of the TLS-certificate of the Schleuder API, respectively. Both should be provided by the API operators.
 
 schleuder-cli does *not* authorize access. Only people who are supposed to have full access to all lists should be allowed to use it on/with your server.
 
@@ -50,7 +48,6 @@ These are the configuration file options and their default values:
 
  * `host`: The hostname (or IP-address) to connect to. Default: `localhost`.
  * `post`: The port to connect to. Default: `4443`.
- * `use_tls`: Use TLS when connect to Schleuder API? Default: `false`.
  * `tls_fingerprint`: TLS-fingerprint of the Schleuder API. To be fetched from the API operators. Default: empty.
  * `api_key`: Key to authenticate with against the Schleuder API. To be fetched from the API operators. Default: empty.
 

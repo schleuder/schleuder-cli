@@ -19,5 +19,6 @@ require 'schleuder-cli/subscriptions'
 require 'schleuder-cli/lists'
 require 'schleuder-cli/keys'
 require 'schleuder-cli/base'
+require 'schleuder-cli/openssl_ssl_patch'
 
 ENV["SCHLEUDER_CLI_CONFIG"] ||= File.join(ENV['HOME'], '.schleuder-cli/schleuder-cli.yml')

@@ -5,7 +5,6 @@ module SchleuderCli
     DEFAULTS = {
         'host' => 'localhost',
         'port' => 4443,
-        'use_tls' => false,
         'tls_fingerprint' => nil,
         'api_key' => nil
       }
@@ -20,10 +19,6 @@ module SchleuderCli
 
     def self.port
       instance.config['port'].to_s
-    end
-
-    def self.use_tls?
-      instance.config['use_tls'].to_s == "true"
     end
 
     def self.tls_fingerprint
