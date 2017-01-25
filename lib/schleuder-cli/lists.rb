@@ -10,10 +10,8 @@ module SchleuderCli
       end
     end
 
-    desc 'new <list@hostname> <adminaddress> </path/to/publickeys.asc>', 'Create a new schleuder list.'
-    def new(listname, adminaddress, keyfile)
-      test_file(keyfile)
-
+    desc 'new <list@hostname> <adminaddress> [</path/to/publickeys.asc>]', 'Create a new schleuder list.'
+    def new(listname, adminaddress, keyfile=nil)
       res = post(url(:lists), {email: listname}) do |http, request|
         http.read_timeout = 120
         begin
@@ -29,17 +27,19 @@ module SchleuderCli
         say "List #{listname} successfully created! Don't forget to hook it into your MTA."
       end
 
-      import_result = import_key(listname, keyfile)
-      case import_result['considered']
-      when 1
-        fingerprint = import_result['imports'].first['fpr']
-        say "Key #{fingerprint} imported."
-      when 0
-        fingerprint = nil
-        say "#{keyfile} did not contain any keys!"
-      else
-        fingerprint = nil
-        say "#{keyfile} contains more than one key, cannot derive fingerprint for #{adminaddress}. Please set it manually!"
+      if ! keyfile.to_s.empty?
+        import_result = import_key(listname, keyfile)
+        case import_result['considered']
+        when 1
+          fingerprint = import_result['imports'].first['fpr']
+          say "Key #{fingerprint} imported."
+        when 0
+          fingerprint = nil
+          say "#{keyfile} did not contain any keys!"
+        else
+          fingerprint = nil
+          say "#{keyfile} contains more than one key, cannot derive fingerprint for #{adminaddress}. Please set it manually!"
+        end
       end
 
       subscribe(listname, adminaddress, fingerprint, true)
