@@ -5,6 +5,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 The format of this file is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [0.0.2] / 2017-01-25
+
+### Fixed
+
+ * Use section 8 instead of 1 for manpage.
+
+
 ## [0.0.1] / 2017-01-25
 
 ### Changed
