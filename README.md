@@ -29,7 +29,7 @@ Installation
    gem install schleuder-cli-0.0.1.gem
    ```
 
-You probably want to install [schleuder](https://0xacab.org/schleuder/schleuder3), too. Without schleuder, this software is very useless.
+You probably want to install [schleuder](https://0xacab.org/schleuder/schleuder), too. Without schleuder, this software is very useless.
 
 Configuration
 -------------

@@ -10,6 +10,7 @@ The format of this file is based on [Keep a Changelog](http://keepachangelog.com
 ### Fixed
 
  * Use section 8 instead of 1 for manpage.
+ * Use correct link to schleuder in README.
 
 
 ## [0.0.1] / 2017-01-25
