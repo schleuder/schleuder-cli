@@ -61,9 +61,7 @@ module SchleuderCli
 
     def request(req, &block)
       test_mandatory_config
-      if Conf.use_tls? || Conf.host == 'localhost'
-        req.basic_auth 'schleuder', Conf.api_key
-      end
+      req.basic_auth 'schleuder', Conf.api_key
       debug "Request to API: #{req.inspect}"
       debug "API request path: #{req.path.inspect}"
       debug "API request headers: #{req.to_hash.inspect}"
@@ -223,14 +221,11 @@ module SchleuderCli
       if Conf.port.empty?
         fatal "Error: 'port' is empty, can't connect (in #{ENV['SCHLEUDER_CLI_CONFIG']})."
       end
-
-      if Conf.use_tls?
-        if Conf.tls_fingerprint.empty?
-          fatal "Error: 'tls_fingerprint' is empty but required if 'use_tls' is true (in #{ENV['SCHLEUDER_CLI_CONFIG']})."
-        end
-        if Conf.api_key.empty?
-          fatal "Error: 'api_key' is empty but required if 'use_tls' is true (in #{ENV['SCHLEUDER_CLI_CONFIG']})."
-        end
+      if Conf.use_tls? && Conf.tls_fingerprint.empty?
+        fatal "Error: 'tls_fingerprint' is empty but required if 'use_tls' is true (in #{ENV['SCHLEUDER_CLI_CONFIG']})."
+      end
+      if Conf.api_key.empty?
+        fatal "Error: 'api_key' is empty but required (in #{ENV['SCHLEUDER_CLI_CONFIG']})."
       end
     end
   end

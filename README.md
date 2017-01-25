@@ -5,7 +5,9 @@ A command line tool to create and manage schleuder-lists.
 
 Schleuder-cli enables creating, configuring, and deleting lists, subscriptions, keys, etc. It uses the Schleuder API, either unencrypted via localhost (default) or TLS-encrypted remotely.
 
-If TLS is used, authentication and TLS-verification is mandatory. You need the fingerprint of the TLS-certificate of the Schleuder API and an API-key. Both should be provided by the API operators.
+Authentication with an API-key is mandatory. It should be provided by the API operators.
+
+If TLS is used, TLS-verification is also mandatory. You need the fingerprint of the TLS-certificate of the Schleuder API, which should also be provided by the API operators.
 
 schleuder-cli does *not* authorize access. Only people who are supposed to have full access to all lists should be allowed to use it on/with your server.
 

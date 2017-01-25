@@ -7,6 +7,10 @@ The format of this file is based on [Keep a Changelog](http://keepachangelog.com
 
 ## [0.0.2] / 2017-01-25
 
+### Changed
+
+* Always send API-key.
+
 ### Fixed
 
  * Use section 8 instead of 1 for manpage.

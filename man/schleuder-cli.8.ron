@@ -17,7 +17,9 @@ schleuder-cli is a command line tool to create, configure, and delete schleuder-
 
 It uses the `schleuder`(8) API, provided by `schleuder-api-daemon`(8), either unencrypted via localhost (default) or TLS-encrypted remotely.
 
-If TLS is used, authentication and TLS-verification is mandatory. You need the fingerprint of the TLS-certificate of `schleuder-api-daemon`(8) and an API-key. Both should be provided by the operators of `schleuer-api-daemon`(8).
+Authentication with an API-key is mandatory. It should be provided by the API operators.
+
+If TLS is used, TLS-verification is also mandatory. You need the fingerprint of the TLS-certificate of `schleuer-api-daemon`(8), which should also be provided by the operators of `schleuer-api-daemon`(8).
 
 schleuder-cli does *not* authorize access. Only people who are supposed to have full access to all lists should be allowed to use it on/with your server.
 
