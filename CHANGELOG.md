@@ -10,6 +10,7 @@ The format of this file is based on [Keep a Changelog](http://keepachangelog.com
 ### Changed
 
 * Always send API-key.
+* Required version of schleuder: 3.0.0rc1.
 
 ### Fixed
 
