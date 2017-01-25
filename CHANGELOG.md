@@ -5,6 +5,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 The format of this file is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [0.0.3] / 2017-01-26
+
+### Changed
+
+* Always use TLS.
+* Required version of schleuder: 3.0.0.
+
+
 ## [0.0.2] / 2017-01-25
 
 ### Changed
