@@ -38,7 +38,7 @@ module SchleuderCli
 
     desc 'check <list@hostname>', "Check for expiring or unusable keys."
     def check(listname)
-      resp = get(url(:check_keys, {list_id: listname}))
+      resp = get(url(:keys, :check_keys, {list_id: listname}))
       say resp['result']
     end
   end
