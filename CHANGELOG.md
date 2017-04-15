@@ -5,6 +5,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 The format of this file is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [0.0.4] / 2017-04-15
+
+### Fixed
+
+* `keys check` now uses the correct backend-URL.
+
+
 ## [0.0.3] / 2017-01-26
 
 ### Changed
