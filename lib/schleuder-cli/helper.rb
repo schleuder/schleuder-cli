@@ -158,15 +158,20 @@ module SchleuderCli
       exit 0
     end
 
+    def say_key_import_stati(import_stati)
+      Array(import_stati).each do |import_status|
+        say "Key #{import_status['fpr']}: #{import_status['action']}"
+      end
+    end
+
     def import_key_and_find_fingerprint(listname, keyfile)
       return nil if keyfile.to_s.empty?
 
       import_result = import_key(listname, keyfile)
       case import_result['considered']
       when 1
-        fingerprint = import_result['imports'].first['fpr']
-        say "Key #{fingerprint} imported."
-        fingerprint
+        say_key_import_stati(import_result['imports'])
+        import_result['imports'].first['fpr']
       when 0
         say "#{keyfile} did not contain any keys!"
         nil
