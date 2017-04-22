@@ -84,6 +84,11 @@ module SchleuderCli
       say delete_req(url(:lists, listname))
     end
 
+    desc 'send-list-key-to-subscriptions <list@hostname>', "Triggers the sending of the list's public key to all subscriptions."
+    def send_list_key_to_subscriptions(listname)
+      response = post(url(:lists, :send_list_key_to_subscriptions, {list_id: listname}), :irrelevant)
+      say response['result']
+    end
 
   end
 end
