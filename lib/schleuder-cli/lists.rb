@@ -27,23 +27,8 @@ module SchleuderCli
         say "List #{listname} successfully created! Don't forget to hook it into your MTA."
       end
 
-      if ! keyfile.to_s.empty?
-        import_result = import_key(listname, keyfile)
-        case import_result['considered']
-        when 1
-          fingerprint = import_result['imports'].first['fpr']
-          say "Key #{fingerprint} imported."
-        when 0
-          fingerprint = nil
-          say "#{keyfile} did not contain any keys!"
-        else
-          fingerprint = nil
-          say "#{keyfile} contains more than one key, cannot derive fingerprint for #{adminaddress}. Please set it manually!"
-        end
-      end
-
+      fingerprint = import_key_and_find_fingerprint(listname, keyfile)
       subscribe(listname, adminaddress, fingerprint, true)
-      say "#{adminaddress} subscribed to #{listname}."
     end
 
     desc 'list-options', 'List available options for lists.'

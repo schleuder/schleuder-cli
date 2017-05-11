@@ -158,6 +158,30 @@ module SchleuderCli
       exit 0
     end
 
+    def say_key_import_stati(import_stati)
+      Array(import_stati).each do |import_status|
+        say "Key #{import_status['fpr']}: #{import_status['action']}"
+      end
+    end
+
+    def import_key_and_find_fingerprint(listname, keyfile)
+      return nil if keyfile.to_s.empty?
+
+      import_result = import_key(listname, keyfile)
+      case import_result['considered']
+      when 1
+        say_key_import_stati(import_result['imports'])
+        import_result['imports'].first['fpr']
+      when 0
+        say "#{keyfile} did not contain any keys!"
+        nil
+      else
+        say "#{keyfile} contains more than one key, cannot determine which fingerprint to use. Please set it manually!"
+        nil
+      end
+
+    end
+
     def import_key(listname, keyfile)
       test_file(keyfile)
       keydata = File.binread(keyfile)
@@ -183,6 +207,13 @@ module SchleuderCli
         print "Error subscribing #{email}: "
         show_errors(res['errors'])
       end
+      text = "#{email} subscribed to #{listname} "
+      if fingerprint
+        text << "with fingerprint #{fingerprint}."
+      else
+        text << "without setting a fingerprint."
+      end
+      say text
     end
 
     def show_errors(errors)

@@ -16,34 +16,16 @@ module SchleuderCli
       say "\n"
     end
 
-    desc 'new <list@hostname> <user@example.org> [<fingerprint>] [</path/to/public.key>]', 'Subscribe email-address to list.'
-    long_desc 'Subscribe an email-address to a list, optionally setting the fingerprint and importing public keys from a file.'
-    def new(listname, email, fingerprint=nil, keyfile=nil)
-      if keyfile
-        test_file(keyfile)
+    desc 'new <list@hostname> <user@example.org> [<fingerprint> | </path/to/public.key>]', 'Subscribe email-address to list.'
+    long_desc 'Subscribe an email-address to a list, optionally setting the fingerprint and/or importing public keys from a file.'
+    def new(listname, email, fingerprint_or_keyfile=nil)
+      if fingerprint_or_keyfile =~ Conf::FINGERPRINT_REGEXP
+        fingerprint = fingerprint_or_keyfile
+      else
+        fingerprint = import_key_and_find_fingerprint(listname, fingerprint_or_keyfile)
       end
 
       subscribe(listname, email, fingerprint)
-
-      text = "#{email} subscribed to #{listname} "
-      if fingerprint
-        text << "with fingerprint #{fingerprint}."
-      else
-        text << "without setting a fingerprint."
-      end
-      say text
-
-      if keyfile
-        import_result = import_key(listname, keyfile)
-        if import_result['considered'] < 1
-          say "#{keyfile} did not contain any keys!"
-        else
-          import_result['imports'].each do |import_status|
-            say "Key #{import_status['fpr']}: #{import_status['action']}"
-          end
-        end
-      end
-
     end
 
     desc 'list-options', 'List available options for subscriptions.'

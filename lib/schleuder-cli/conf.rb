@@ -2,6 +2,8 @@ module SchleuderCli
   class Conf
     include Singleton
 
+    FINGERPRINT_REGEXP = /\A0?x?[a-f0-9]{32,}\z/i
+
     DEFAULTS = {
         'host' => 'localhost',
         'port' => 4443,

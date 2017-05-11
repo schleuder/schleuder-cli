@@ -9,9 +9,7 @@ module SchleuderCli
       if import_result['considered'] < 1
         say "#{keyfile} did not contain any keys!"
       else
-        import_result['imports'].each do |import_status|
-          say "Key #{import_status['fpr']}: #{import_status['action']}"
-        end
+        say_key_import_stati(import_result['imports'])
       end
     end
 
