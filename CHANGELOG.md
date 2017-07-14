@@ -5,6 +5,17 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 The format of this file is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [0.1.0] / XXX
+
+### Added
+
+* New sub-command for lists: send-list-key-to-subscriptions. It instructs Schleuder to send the public key of the list to all of its subscriptions. Very useful after the setup of a new list.
+
+### Changed
+
+* When subscribing an address, fingerprint and key-file are mutually exclusive now. With a key-file we now use the fingerprint of the imported key (if it was exactly one — otherwise you'll see an error-message). Previously you'd have to provide fingerprint *and* key-file to have the key imported and assigned.
+
+
 ## [0.0.4] / 2017-04-15
 
 ### Fixed
