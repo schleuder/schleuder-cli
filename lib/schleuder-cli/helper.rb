@@ -182,12 +182,17 @@ module SchleuderCli
 
     end
 
-    def import_key(listname, keyfile)
+    def read_keydata(keyfile)
       test_file(keyfile)
       keydata = File.binread(keyfile)
       if ! keydata.match('BEGIN PGP')
         keydata = Base64.encode64(keydata)
       end
+      keydata
+    end
+
+    def import_key(listname, keyfile)
+      keydata = read_keydata(keyfile)
       post(url(:keys, {list_id: listname}), {keymaterial: keydata})
     end
 
@@ -197,11 +202,13 @@ module SchleuderCli
       end
     end
 
-    def subscribe(listname, email, fingerprint, adminflag=false)
+    def subscribe(listname, email, fingerprint, adminflag=nil, delivery_enabled=nil, key_material=nil)
       res = post(url(:subscriptions, {list_id: listname}), {
           email: email,
           fingerprint: fingerprint.to_s,
-          admin: adminflag.to_s
+          admin: adminflag,
+          delivery_enabled: delivery_enabled,
+          key_material: key_material
         })
       if res && res['errors']
         print "Error subscribing #{email}: "

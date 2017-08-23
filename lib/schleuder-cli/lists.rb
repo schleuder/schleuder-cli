@@ -10,9 +10,19 @@ module SchleuderCli
       end
     end
 
-    desc 'new <list@hostname> <adminaddress> [</path/to/publickeys.asc>]', 'Create a new schleuder list.'
-    def new(listname, adminaddress, keyfile=nil)
-      res = post(url(:lists), {email: listname}) do |http, request|
+    desc 'new <list@hostname> <adminaddress> [<admin-fingerprint> | </path/to/admin-publickey.asc>]', 'Create a new schleuder list.'
+    def new(listname, adminaddress, fingerprint_or_keyfile=nil)
+      args = {
+        email: listname,
+        adminaddress: adminaddress
+      }
+      if fingerprint_or_keyfile =~ Conf::FINGERPRINT_REGEXP
+        args[:adminfingerprint] = fingerprint_or_keyfile
+      else
+        args[:adminkey] = read_keydata(fingerprint_or_keyfile)
+      end
+
+      res = post(url(:lists), args) do |http, request|
         http.read_timeout = 120
         begin
           http.request(request)
@@ -24,11 +34,8 @@ module SchleuderCli
       if res && res['errors']
         show_errors(res['errors'])
       else
-        say "List #{listname} successfully created! Don't forget to hook it into your MTA."
+        say "List #{listname} created and #{adminaddress} subscribed! Don't forget to hook it into your MTA."
       end
-
-      fingerprint = import_key_and_find_fingerprint(listname, keyfile)
-      subscribe(listname, adminaddress, fingerprint, true)
     end
 
     desc 'list-options', 'List available options for lists.'

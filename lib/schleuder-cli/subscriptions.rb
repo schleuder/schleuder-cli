@@ -20,12 +20,10 @@ module SchleuderCli
     long_desc 'Subscribe an email-address to a list, optionally setting the fingerprint and/or importing public keys from a file.'
     def new(listname, email, fingerprint_or_keyfile=nil)
       if fingerprint_or_keyfile =~ Conf::FINGERPRINT_REGEXP
-        fingerprint = fingerprint_or_keyfile
+        subscribe(listname, email, fingerprint_or_keyfile)
       else
-        fingerprint = import_key_and_find_fingerprint(listname, fingerprint_or_keyfile)
+        subscribe(listname, email, nil, nil, nil, fingerprint_or_keyfile)
       end
-
-      subscribe(listname, email, fingerprint)
     end
 
     desc 'list-options', 'List available options for subscriptions.'
