@@ -1,0 +1,12 @@
+bundler:audit:
+  image: ruby:2.4
+  script:
+    - gem install bundler-audit
+    - gem install bundler --no-ri --no-rdoc
+    - bundle install
+    - bundle-audit update
+    - bundle-audit check
+  allow_failure: true
+
+
+
