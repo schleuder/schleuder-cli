@@ -7,8 +7,8 @@ Gem::Specification.new do |s|
   s.name         = "schleuder-cli"
   s.version      = SchleuderCli::VERSION
   s.authors      = 'schleuder dev team'
-  s.email        = "schleuder@nadir.org"
-  s.homepage     = "https://schleuder.nadir.org/"
+  s.email        = "team@schleuder.org"
+  s.homepage     = "https://schleuder.org/"
   s.summary      = "A command line tool to configure schleuder-lists."
   s.description  = "Schleuder-cli enables creating, configuring, and deleting schleuder-lists, subscriptions, keys, etc."
   s.files        = `git ls-files man lib README.md`.split
