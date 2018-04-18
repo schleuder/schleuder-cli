@@ -3,7 +3,7 @@ require_relative "lib/#{project}.rb"
 
 @version = SchleuderCli::VERSION
 @tagname = "#{project}-#{@version}"
-@gpguid = 'schleuder@nadir.org'
+@gpguid = 'team@schleuder.org'
 
 def edit_and_add_file(filename)
   puts "Please edit #{filename} to refer to version #{@version}"
