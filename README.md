@@ -73,6 +73,18 @@ Contributing
 Please see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 
+Mission statement
+-----------------
+
+We summarized our motivation in [MISSION_STATEMENT.md](MISSION_STATEMENT.md).
+
+
+Code of Conduct
+---------------
+
+We adopted a code of conduct. Please read [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
+
+
 License
 -------
 
