@@ -31,7 +31,8 @@ cache:
     APT_INSTALL_PACKAGES: eatmydata
   <<: *setup_apt
   script:
-    - eatmydata gem install bundler --no-ri --no-rdoc
+    - bundler_args="$(ruby -e 'if RUBY_VERSION[2].to_i < 3; puts %{--no-ri --no-rdoc -v 1.17.3}; else; puts %{--no-document}; end')"
+    - eatmydata gem install bundler $bundler_args
     - eatmydata bundle install --jobs $(nproc) --path vendor
     - eatmydata bundle exec rspec
 
@@ -66,7 +67,7 @@ bundler:audit:
   only:
     - schedules
   script:
-    - gem install bundler-audit --no-ri --no-rdoc
+    - gem install bundler-audit --no-document
     - bundle install --jobs $(nproc) --path vendor
     - bundle-audit update
     - bundle-audit check
