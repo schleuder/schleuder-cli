@@ -19,7 +19,7 @@ module SchleuderCli
       u = "/#{args.join('/')}.json"
       if params
         paramstring  = params.map do |k,v|
-          "#{URI.escape(k.to_s)}=#{URI.escape(v.to_s)}"
+          "#{CGI.escape(k.to_s)}=#{CGI.escape(v.to_s)}"
         end.join('&')
         u << "?#{paramstring}"
       end
