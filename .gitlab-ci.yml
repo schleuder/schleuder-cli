@@ -48,24 +48,21 @@ codespell:
     - codespell -S vendor -q 2 -f
   stage: static
 
-ruby:2.1:
-  image: ruby:2.1
+ruby:2.6:
+  image: ruby:2.6
   <<: *test_ruby
-ruby:2.2:
-  image: ruby:2.2
+ruby:2.7:
+  image: ruby:2.7
   <<: *test_ruby
-ruby:2.3:
-  image: ruby:2.3
+ruby:3.0:
+  image: ruby:3.0
   <<: *test_ruby
-ruby:2.4:
-  image: ruby:2.4
-  <<: *test_ruby
-ruby:2.5:
-  image: ruby:2.5
+ruby:3.1:
+  image: ruby:3.1
   <<: *test_ruby
 
 bundler:audit:
-  image: ruby:2.5
+  image: ruby:2.7
   only:
     - schedules
   script:
