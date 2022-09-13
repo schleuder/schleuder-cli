@@ -12,7 +12,7 @@ schleuder-cli does *not* authorize access. Only people who are supposed to have 
 
 Requirements
 ------------
-* ruby  >=2.1
+* ruby  >=2.7
 * thor
 
 Installation
