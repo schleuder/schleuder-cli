@@ -164,22 +164,27 @@ module SchleuderCli
       end
     end
 
+    def say_key_import_result(keys)
+      keys.each do |key|
+        if key['import_action'] == 'error'
+          say "Unexpected error while importing key #{key['fingerprint']}"
+        else
+          say "#{key['import_action'].capitalize}: #{key['summary']}"
+        end
+      end
+    end
+
     def import_key_and_find_fingerprint(listname, keyfile)
       return nil if keyfile.to_s.empty?
 
-      import_result = import_key(listname, keyfile)
-      case import_result['considered']
-      when 1
-        say_key_import_stati(import_result['imports'])
-        import_result['imports'].first['fpr']
-      when 0
-        say "#{keyfile} did not contain any keys!"
-        nil
+      fingerprints = import_key(listname, keyfile)
+
+      if fingerprints.size == 1
+        fingerprints.first
       else
         say "#{keyfile} contains more than one key, cannot determine which fingerprint to use. Please set it manually!"
         nil
       end
-
     end
 
     def import_key(listname, keyfile)
@@ -188,7 +193,26 @@ module SchleuderCli
       if ! keydata.match('BEGIN PGP')
         keydata = Base64.encode64(keydata)
       end
-      post(url(:keys, {list_id: listname}), {keymaterial: keydata})
+      result = post(url(:keys, {list_id: listname}), {keymaterial: keydata})
+      if result.has_key?("keys")
+        # API is v5 or later.
+        num = result["keys"].size
+        if num == 0
+          say "#{keyfile} did not contain any keys!"
+          return nil
+        end
+        say_key_import_result(result["keys"])
+        result["keys"].map { |key| key["fingerprint"] }
+      else
+        # API is v4 or earlier.
+        num = result["considered"]
+        if num == 0
+          say "#{keyfile} did not contain any keys!"
+          return nil
+        end
+        say_key_import_stati(result['imports'])
+        result['imports'].map { |import| import['fpr'] }
+      end
     end
 
     def test_file(filename)
