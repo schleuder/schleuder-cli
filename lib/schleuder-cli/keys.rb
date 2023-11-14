@@ -5,11 +5,12 @@ module SchleuderCli
 
     desc 'import <list@hostname> </path/to/keyfile>', "Import a key into a list's keyring."
     def import(listname, keyfile)
-      import_result = import_key(listname, keyfile)
-      if import_result['considered'] < 1
+      result = import_key(listname, keyfile)
+      keys = result["keys"]
+      if keys.size == 0
         say "#{keyfile} did not contain any keys!"
       else
-        say_key_import_stati(import_result['imports'])
+        say_key_import_result(keys)
       end
     end
 
