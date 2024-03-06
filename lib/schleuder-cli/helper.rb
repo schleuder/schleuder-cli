@@ -97,7 +97,7 @@ module SchleuderCli
     def handle_response_errors(response)
       case response.code.to_i
       when 404
-        fatal response.body
+        fatal "Schleuder could not find the requested resource, please check your input."
       when 401
         fatal "Authentication failed, please check your API key."
       when 400
