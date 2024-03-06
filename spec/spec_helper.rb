@@ -27,5 +27,5 @@ RSpec.configure do |config|
 end
 
 def run_cli(args='')
-  `bin/schleuder-cli #{args}`
+  `SCHLEUDER_CLI_CONFIG='spec/schleuder-cli.yml' bin/schleuder-cli #{args} 2>&1`
 end
