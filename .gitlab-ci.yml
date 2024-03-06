@@ -22,7 +22,8 @@ workflow:
   script:
     - eatmydata gem install bundler $bundler_args
     - eatmydata bundle install --jobs $(nproc) --path vendor
-    - eatmydata bundle exec rspec
+      # The integration tests require a running schleuder-api-daemon, which we don't have in this setup (yet?)
+    - eatmydata bundle exec rspec spec/schleuder-cli
 
 codespell:
   rules:
