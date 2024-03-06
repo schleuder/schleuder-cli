@@ -36,9 +36,13 @@ codespell:
 
 ruby:2.6:
   image: $IMAGE_REGISTRY:schleuder-ruby2.6
+  variables:
+    bundler_args: "-v 2.4.22"
   <<: *test_ruby
 ruby:2.7:
   image: $IMAGE_REGISTRY:schleuder-ruby2.7
+  variables:
+    bundler_args: "-v 2.4.22"
   <<: *test_ruby
 ruby:3.0:
   image: $IMAGE_REGISTRY:schleuder-ruby3.0
