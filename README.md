@@ -90,6 +90,20 @@ License
 
 GNU GPL 3.0. Please see [LICENSE.txt](LICENSE.txt).
 
+Tests
+-----
+To run the integration tests, you must have a schleuder-api-daemon running locally (in test mode, preferably). From the root directory of the schleuder-repo execute this:
+
+```
+SCHLEUDER_ENV=test SCHLEUDER_CONFIG=spec/schleuder.yml SCHLEUDER_LIST_DEFAULTS=etc/list-defaults.yml bundle exec ./bin/schleuder-api-daemon
+```
+
+Then you can run the tests:
+
+```
+bundle exec rspec
+```
+
 
 Alternative Download
 --------------------
