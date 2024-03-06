@@ -27,5 +27,11 @@ module SchleuderCli
         say VERSION
       end
     end
+
+    # This tells Thor to go with its new behaviour since v1.0.0, which is
+    # exiting in case of failures.
+    def self.exit_on_failure?
+      true
+    end
   end
 end

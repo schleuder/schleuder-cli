@@ -20,6 +20,6 @@ Gem::Specification.new do |s|
   #s.signing_key = "#{ENV['HOME']}/.gem/schleuder-gem-private_key.pem"
   #s.cert_chain  = ['gem-public_cert.pem']
   s.license = 'GPL-3.0'
-  s.add_runtime_dependency 'thor', '~> 0'
+  s.add_runtime_dependency 'thor', '~> 1'
   s.add_development_dependency 'rspec', '~> 3.5.0'
 end
