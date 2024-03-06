@@ -58,7 +58,7 @@ ruby:3.3:
   <<: *test_ruby
 
 bundler:audit:
-  image: ruby:2.7
+  image: ruby:3.2
   only:
     - schedules
   script:
