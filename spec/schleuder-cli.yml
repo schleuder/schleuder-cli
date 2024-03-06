@@ -1,0 +1,4 @@
+host: localhost
+port: 4443
+tls_fingerprint: f1efd802fc6845eb56213e75f6929e619152999acab13dc06aebcaa0d1830374
+api_key: test_api_key
