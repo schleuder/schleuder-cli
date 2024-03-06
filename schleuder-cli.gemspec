@@ -21,5 +21,8 @@ Gem::Specification.new do |s|
   #s.cert_chain  = ['gem-public_cert.pem']
   s.license = 'GPL-3.0'
   s.add_runtime_dependency 'thor', '~> 1'
+  if Gem::Version.new(RUBY_VERSION) >= Gem::Version.new("3.3.0")
+    s.add_runtime_dependency 'base64', '~> 0.2.0'
+  end
   s.add_development_dependency 'rspec', '~> 3.5.0'
 end
