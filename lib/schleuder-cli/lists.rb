@@ -13,6 +13,7 @@ module SchleuderCli
     desc 'new <list@hostname> <adminaddress> [</path/to/publickeys.asc>]', 'Create a new schleuder list.'
     def new(listname, adminaddress, keyfile=nil)
       res = post(url(:lists), {email: listname}) do |http, request|
+        test_file(keyfile) if keyfile
         http.read_timeout = 120
         begin
           http.request(request)
