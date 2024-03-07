@@ -7,6 +7,17 @@ The format of this file is based on [Keep a Changelog](http://keepachangelog.com
 
 ## Unreleased
 
+
+## [0.2.0] / 2024-03-08
+
+### Changed
+
+* Make the error message if a resource could not be found a little friendlier.
+* If a key file given to `lists new` does not exist, don't create the list in the first place.
+* For each imported key show a key summary, not just the fingerprint (if provided by the API daemon, which it will do/does from version 5.0.0 on).
+* Update the gem "thor" to version 1.0.
+* Use "base64" as gem if Ruby is v3.3 (or later), because in v3.4 it's being removed from the standard library.
+
 ### Fixed
 
 * Fix compatibility with ruby 3.0 by changing how values are escaped.
