@@ -18,7 +18,7 @@ Requirements
 Installation
 ------------
 
-1. Download [the gem](https://0xacab.org/schleuder/schleuder-cli/raw/master/gems/schleuder-cli-0.1.0.gem) and [the OpenPGP-signature](https://0xacab.org/schleuder/schleuder-cli/raw/master/gems/schleuder-cli-0.1.0.gem.sig) and verify:
+1. Download [the gem](https://0xacab.org/schleuder/schleuder-cli/raw/main/gems/schleuder-cli-0.1.0.gem) and [the OpenPGP-signature](https://0xacab.org/schleuder/schleuder-cli/raw/main/gems/schleuder-cli-0.1.0.gem.sig) and verify:
    ```
    gpg --recv-key 0xB3D190D5235C74E1907EACFE898F2C91E2E6E1F3
    gpg --verify schleuder-cli-0.1.0.gem.sig
@@ -108,4 +108,4 @@ bundle exec rspec
 Alternative Download
 --------------------
 
-Alternatively to the gem-files you can download the latest release as [a tarball](https://0xacab.org/schleuder/schleuder-cli/raw/master/gems/schleuder-cli-0.1.0.tar.gz) and [its OpenPGP-signature](https://0xacab.org/schleuder/schleuder-cli/raw/master/gems/schleuder-cli-0.1.0.tar.gz.sig).
+Alternatively to the gem-files you can download the latest release as [a tarball](https://0xacab.org/schleuder/schleuder-cli/raw/main/gems/schleuder-cli-0.1.0.tar.gz) and [its OpenPGP-signature](https://0xacab.org/schleuder/schleuder-cli/raw/main/gems/schleuder-cli-0.1.0.tar.gz.sig).

@@ -91,7 +91,7 @@ end
 desc 'Build and sign a tarball'
 task :tarball do
   tarball = "#{@tagname}.tar.gz"
-  `git archive --format tar.gz --prefix "#{@tagname}/" -o #{tarball} master`
+  `git archive --format tar.gz --prefix "#{@tagname}/" -o #{tarball} main`
   move_sign_and_add(tarball)
 end
 
