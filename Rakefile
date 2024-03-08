@@ -27,7 +27,7 @@ desc "Build new version: git-tag and gem-file"
 task :new_version => [
     :check_version,
     :edit_readme, :edit_changelog,
-    :git_add_version, :update_gemfile_lock,
+    :git_add_version,
     :git_commit,
     :gem, :tarball, :git_amend_gems,
     :git_tag
