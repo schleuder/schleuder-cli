@@ -83,9 +83,9 @@ end
 desc 'Publish gem-file to rubygems.org'
 task :publish_gem do
   puts "Really push #{@tagname}.gem to rubygems.org? [yN]"
-  if gets.match(/^y/i)
+  if $stdin.gets.match(/^y/i)
     puts "Pushing..."
-    `gem push #{@tagname}.gem`
+    `gem push gems/#{@tagname}.gem`
   else
     puts "Not pushed."
   end
