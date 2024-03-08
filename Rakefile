@@ -6,8 +6,11 @@ require_relative "lib/#{project}.rb"
 @gpguid = 'team@schleuder.org'
 
 def edit_and_add_file(filename)
-  puts "Please edit #{filename} to refer to version #{@version}"
-  if system("gvim -f #{filename}.md")
+  ENV['EDITOR'] ||= "vim"
+  exec_string = "#{ENV['EDITOR']} #{filename}.md"
+  puts "Please edit #{filename} to refer to version #{@version}\n(Press Enter to run '#{exec_string}') "
+  $stdin.gets
+  if system(exec_string)
     `git add #{filename}.md`
   else
     exit 1
